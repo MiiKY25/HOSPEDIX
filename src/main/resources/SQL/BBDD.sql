@@ -29,7 +29,7 @@ CREATE TABLE reservas (
     fecha_checkout DATE,
     estado_pago ENUM('pagado', 'pendiente', 'cancelado'),
     cantidad_personas INT,
-    extras TEXT,
+    extras VARCHAR(100),
     FOREIGN KEY (num_habitacion) REFERENCES habitaciones(num_habitacion)
 );
 
