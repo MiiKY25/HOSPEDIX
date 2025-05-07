@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="435.0" prefWidth="905.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hospedix.controladores.ControllerMenu">
+   <children>
+      <GridPane prefHeight="187.0" prefWidth="900.0">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="709.0" minWidth="10.0" prefWidth="193.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="709.0" minWidth="10.0" prefWidth="496.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="445.0" minWidth="10.0" prefWidth="231.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <HBox alignment="CENTER" prefHeight="190.0" prefWidth="489.0" spacing="20.0" GridPane.columnIndex="1">
+               <children>
+                  <Label text="BIENVENIDO">
+                     <font>
+                        <Font name="System Bold" size="36.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="txtEmpleado" text="X">
+                     <font>
+                        <Font name="System Bold" size="36.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <VBox alignment="CENTER" prefHeight="149.0" prefWidth="200.0" GridPane.columnIndex="2">
+               <children>
+                  <ImageView fitHeight="149.0" fitWidth="172.0" VBox.vgrow="ALWAYS">
+                     <image>
+                        <Image url="@../img/logo.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#accionVolver" prefHeight="65.0" prefWidth="110.0" text="VOLVER" />
+               </children>
+            </VBox>
+         </children>
+      </GridPane>
+      <GridPane prefHeight="219.0" prefWidth="900.0">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints maxHeight="113.0" minHeight="10.0" prefHeight="113.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="107.0" minHeight="10.0" prefHeight="59.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#accionEmpleados" prefHeight="80.0" prefWidth="200.0" text="GESTION EMPLEADOS" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#accionHabitaciones" prefHeight="80.0" prefWidth="200.0" text="GESTION HABITACIONES" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#accionHuespedes" prefHeight="80.0" prefWidth="200.0" text="GESTION HUESPEDES" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#accionReservas" prefHeight="80.0" prefWidth="200.0" text="GESTION RESERVAS" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#accionIncidencias" prefHeight="80.0" prefWidth="200.0" text="GESTION INCIDENCIAS" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+         </children>
+      </GridPane>
+   </children>
+</VBox>
