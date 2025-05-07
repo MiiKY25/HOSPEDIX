@@ -3,6 +3,7 @@ package org.hospedix;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -10,9 +11,14 @@ import java.io.IOException;
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/fxml/inicio.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Hospedix");
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/logo.png")));
+        stage.setMinWidth(500);
+        stage.setMinHeight(300);
+        stage.setMaxWidth(800);
+        stage.setMaxHeight(500);
         stage.setScene(scene);
         stage.show();
     }
