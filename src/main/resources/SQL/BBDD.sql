@@ -29,14 +29,15 @@ CREATE TABLE reservas (
     fecha_checkout DATE,
     estado_pago ENUM('pagado', 'pendiente', 'cancelado'),
     cantidad_personas INT,
-    extras TEXT,
+    precio INT,
+    extras INT,
     FOREIGN KEY (num_habitacion) REFERENCES habitaciones(num_habitacion)
 );
 
 CREATE TABLE incidencias (
     id_incidencia INT AUTO_INCREMENT PRIMARY KEY,
     tipo_incidencia ENUM('limpieza', 'mantenimiento', 'otros'),
-    descripcion TEXT,
+    descripcion VARCHAR(100),
     fecha_reporte DATE,
     num_habitacion INT,
     estado ENUM('abierto', 'cerrado'),
