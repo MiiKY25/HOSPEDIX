@@ -17,8 +17,7 @@ public class HelloApplication extends Application {
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/logo.png")));
         stage.setMinWidth(500);
         stage.setMinHeight(300);
-        stage.setMaxWidth(800);
-        stage.setMaxHeight(500);
+        stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
     }
