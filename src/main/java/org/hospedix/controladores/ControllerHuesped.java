@@ -16,31 +16,31 @@ public class ControllerHuesped {
     private Button btnEliminar;
 
     @FXML
-    private TableView<?> tbTablaHuesped;
+    private TableColumn<?, ?> colApellidos;
 
     @FXML
-    private TableColumn<?, ?> tcApellidos;
+    private TableColumn<?, ?> colDNI;
 
     @FXML
-    private TableColumn<?, ?> tcDni;
+    private TableColumn<?, ?> colNombre;
 
     @FXML
-    private TableColumn<?, ?> tcNombre;
+    private TableColumn<?, ?> colTelefono;
 
     @FXML
-    private TableColumn<?, ?> tcTelefono;
+    private TableView<?> tablaHuesped;
 
     @FXML
-    private TextField tfApellidos;
+    private TextField txtApellidos;
 
     @FXML
-    private TextField tfDni;
+    private TextField txtDNI;
 
     @FXML
-    private TextField tfNombre;
+    private TextField txtNombre;
 
     @FXML
-    private TextField tfTelefono;
+    private TextField txtTelefono;
 
     @FXML
     void accionAniadir(ActionEvent event) {
@@ -61,5 +61,6 @@ public class ControllerHuesped {
     void accionVolver(ActionEvent event) {
 
     }
+
 
 }

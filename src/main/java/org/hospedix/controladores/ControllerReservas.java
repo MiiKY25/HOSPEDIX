@@ -4,11 +4,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 
-public class ControllerHabitaciones {
+public class ControllerReservas {
 
     @FXML
     private Button btnEditar;
@@ -17,28 +18,58 @@ public class ControllerHabitaciones {
     private Button btnEliminar;
 
     @FXML
+    private TableColumn<?, ?> colCliente;
+
+    @FXML
     private TableColumn<?, ?> colEstado;
+
+    @FXML
+    private TableColumn<?, ?> colExtras;
 
     @FXML
     private TableColumn<?, ?> colHabitacion;
 
     @FXML
+    private TableColumn<?, ?> colID;
+
+    @FXML
+    private TableColumn<?, ?> colIN;
+
+    @FXML
+    private TableColumn<?, ?> colOUT;
+
+    @FXML
+    private TableColumn<?, ?> colPersonas;
+
+    @FXML
     private TableColumn<?, ?> colPrecio;
 
     @FXML
-    private TableColumn<?, ?> colTipo;
+    private ComboBox<?> comboCliente;
 
     @FXML
     private ComboBox<?> comboEstado;
 
     @FXML
-    private ComboBox<?> comboTipo;
+    private ComboBox<?> comboHabitacion;
 
     @FXML
-    private TableView<?> tablaHabitacion;
+    private DatePicker fechaIN;
 
     @FXML
-    private TextField txtHabitacion;
+    private DatePicker fechaOUT;
+
+    @FXML
+    private TableView<?> tablaReservas;
+
+    @FXML
+    private TextField txtCantPersonas;
+
+    @FXML
+    private TextField txtExtras;
+
+    @FXML
+    private TextField txtID;
 
     @FXML
     private TextField txtPrecio;
@@ -62,6 +93,5 @@ public class ControllerHabitaciones {
     void accionVolver(ActionEvent event) {
 
     }
-
 
 }

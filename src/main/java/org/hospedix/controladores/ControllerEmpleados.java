@@ -2,54 +2,60 @@ package org.hospedix.controladores;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 public class ControllerEmpleados {
 
     @FXML
-    private ComboBox<?> cbCargo;
+    private Button btnEditar;
 
     @FXML
-    private TableView<?> tbTablaEmpleados;
+    private Button btnEliminar;
 
     @FXML
-    private TableColumn<?, ?> tcApellidos;
+    private TableColumn<?, ?> colApellidos;
 
     @FXML
-    private TableColumn<?, ?> tcCargo;
+    private TableColumn<?, ?> colCargo;
 
     @FXML
-    private TableColumn<?, ?> tcDireccion;
+    private TableColumn<?, ?> colDNI;
 
     @FXML
-    private TableColumn<?, ?> tcDni;
+    private TableColumn<?, ?> colDireccion;
 
     @FXML
-    private TableColumn<?, ?> tcHorario;
+    private TableColumn<?, ?> colHorario;
 
     @FXML
-    private TableColumn<?, ?> tcNombre;
+    private TableColumn<?, ?> colNombre;
 
     @FXML
-    private TextField tfApellidos;
+    private TableColumn<?, ?> colTekefono;
 
     @FXML
-    private TextField tfDireccion;
+    private ComboBox<?> comboCargo;
 
     @FXML
-    private TextField tfDni;
+    private TableView<?> tablaEmpleados;
 
     @FXML
-    private TextField tfHorario;
+    private TextField txtApellidos;
 
     @FXML
-    private TextField tfNombre;
+    private TextField txtDNI;
 
     @FXML
-    private TableColumn<?, ?> tcTelefono;
+    private TextField txtDireccion;
+
+    @FXML
+    private TextField txtHorario;
+
+    @FXML
+    private TextField txtNombre;
+
+    @FXML
+    private TextField txtTelefono;
 
     @FXML
     void accionAniadir(ActionEvent event) {
@@ -70,5 +76,6 @@ public class ControllerEmpleados {
     void accionVolver(ActionEvent event) {
 
     }
+
 
 }
