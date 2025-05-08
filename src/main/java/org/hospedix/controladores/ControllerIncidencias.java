@@ -2,48 +2,54 @@ package org.hospedix.controladores;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 public class ControllerIncidencias {
 
     @FXML
-    private ComboBox<?> cbEstado;
+    private Button btnEditar;
 
     @FXML
-    private ComboBox<?> cbTipo;
+    private Button btnEliminar;
 
     @FXML
-    private TableView<?> tbTablaIncidencias;
+    private TableColumn<?, ?> colDescripcion;
 
     @FXML
-    private TableColumn<?, ?> tcDescripcion;
+    private TableColumn<?, ?> colEstado;
 
     @FXML
-    private TableColumn<?, ?> tcEstado;
+    private TableColumn<?, ?> colFecha;
 
     @FXML
-    private TableColumn<?, ?> tcFecha;
+    private TableColumn<?, ?> colHabitacion;
 
     @FXML
-    private TableColumn<?, ?> tcHabitacion;
+    private TableColumn<?, ?> colID;
 
     @FXML
-    private TableColumn<?, ?> tcID;
+    private TableColumn<?, ?> colTipo;
 
     @FXML
-    private TableColumn<?, ?> tcTipo;
+    private ComboBox<?> comboEstado;
 
     @FXML
-    private TextField tfDescripcion;
+    private ComboBox<?> comboHabitacion;
 
     @FXML
-    private TextField tfFecha;
+    private ComboBox<?> comboTipo;
 
     @FXML
-    private TextField tfHabitacion;
+    private DatePicker fecha;
+
+    @FXML
+    private TableView<?> tablaIncidencias;
+
+    @FXML
+    private TextArea txtDescripcion;
+
+    @FXML
+    private TextField txtID;
 
     @FXML
     void accionAniadir(ActionEvent event) {
