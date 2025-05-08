@@ -6,7 +6,7 @@ public class Empleado {
     private String dni;
     private String nombre;
     private String apellido;
-    private String telefono;
+    private int telefono;
     private String direccion;
     private String cargo;
     private String horarioTrabajo;
@@ -15,7 +15,7 @@ public class Empleado {
     public Empleado() {}
 
     // Constructor completo
-    public Empleado(String dni, String nombre, String apellido, String telefono, String direccion, String cargo, String horarioTrabajo) {
+    public Empleado(String dni, String nombre, String apellido, int telefono, String direccion, String cargo, String horarioTrabajo) {
         this.dni = dni;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -50,11 +50,11 @@ public class Empleado {
         this.apellido = apellido;
     }
 
-    public String getTelefono() {
+    public int getTelefono() {
         return telefono;
     }
 
-    public void setTelefono(String telefono) {
+    public void setTelefono(int telefono) {
         this.telefono = telefono;
     }
 

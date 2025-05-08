@@ -8,10 +8,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class HelloApplication extends Application {
+public class HospedixApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/fxml/inicio.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(HospedixApplication.class.getResource("/fxml/inicio.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Hospedix");
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/logo.png")));
