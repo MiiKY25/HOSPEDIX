@@ -25,13 +25,15 @@ CREATE TABLE huesped (
 CREATE TABLE reservas (
     id_reserva INT AUTO_INCREMENT PRIMARY KEY,
     num_habitacion INT,
+    dni_huesped VARCHAR(20),
     fecha_checkin DATE,
     fecha_checkout DATE,
     estado_pago ENUM('pagado', 'pendiente', 'cancelado'),
     cantidad_personas INT,
     precio INT,
     extras INT,
-    FOREIGN KEY (num_habitacion) REFERENCES habitaciones(num_habitacion)
+    FOREIGN KEY (num_habitacion) REFERENCES habitaciones(num_habitacion),
+    FOREIGN KEY (dni_huesped) REFERENCES huesped(dni)
 );
 
 CREATE TABLE incidencias (
