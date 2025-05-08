@@ -1,3 +1,7 @@
+CREATE DATABASE IF NOT EXISTS hospedix;
+
+USE hospedix;
+
 CREATE TABLE empleados (
     dni VARCHAR(20) PRIMARY KEY,
     nombre VARCHAR(50),
