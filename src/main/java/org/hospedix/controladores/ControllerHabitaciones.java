@@ -30,23 +30,6 @@ public class ControllerHabitaciones {
 
     private Habitacion habitacionSeleccionada = null;
 
-    @FXML
-    private void initialize() {
-        colHabitacion.setCellValueFactory(new PropertyValueFactory<>("numHabitacion"));
-        colEstado.setCellValueFactory(new PropertyValueFactory<>("estado"));
-        colTipo.setCellValueFactory(new PropertyValueFactory<>("tipo"));
-        colPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
-
-        comboEstado.setItems(FXCollections.observableArrayList("Disponible", "Ocupada", "Mantenimiento"));
-        comboTipo.setItems(FXCollections.observableArrayList("Individual", "Doble", "Suite"));
-        comboEstado.getSelectionModel().selectFirst();
-        comboTipo.getSelectionModel().selectFirst();
-
-        configurarEventosTabla();
-        cargarHabitaciones();
-        estadoInicialBotones();
-    }
-
     private void configurarEventosTabla() {
         tablaHabitacion.setOnMouseClicked(event -> {
             habitacionSeleccionada = tablaHabitacion.getSelectionModel().getSelectedItem();
@@ -223,5 +206,22 @@ public class ControllerHabitaciones {
         btnEditar.setDisable(true);
         btnEliminar.setDisable(true);
         btnAniadir.setDisable(false);
+    }
+
+    @FXML
+    private void initialize() {
+        colHabitacion.setCellValueFactory(new PropertyValueFactory<>("numHabitacion"));
+        colEstado.setCellValueFactory(new PropertyValueFactory<>("estado"));
+        colTipo.setCellValueFactory(new PropertyValueFactory<>("tipo"));
+        colPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
+
+        comboEstado.setItems(FXCollections.observableArrayList("Disponible", "Ocupada", "Mantenimiento"));
+        comboTipo.setItems(FXCollections.observableArrayList("Individual", "Doble", "Suite"));
+        comboEstado.getSelectionModel().selectFirst();
+        comboTipo.getSelectionModel().selectFirst();
+
+        configurarEventosTabla();
+        cargarHabitaciones();
+        estadoInicialBotones();
     }
 }
