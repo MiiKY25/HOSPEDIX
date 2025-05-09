@@ -122,7 +122,7 @@ public class ControllerHabitaciones {
                 mostrarInfo("Habitación actualizada correctamente.");
                 limpiarCampos();
                 cargarHabitaciones();
-                estadoInicialBotones(); // ← Aquí se vuelven a ajustar los botones
+                estadoInicialBotones();
             } else {
                 mostrarError("Error al actualizar la habitación.");
             }
