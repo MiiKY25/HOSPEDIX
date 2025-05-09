@@ -129,7 +129,7 @@
                   <Button fx:id="btnLimpiar" mnemonicParsing="false" onAction="#accionLimpiar" text="Limpiar" />
                </children>
             </HBox>
-            <TableView fx:id="tablaEmpleados" prefHeight="226.0" prefWidth="900.0">
+            <TableView fx:id="tablaEmpleados" prefHeight="226.0" prefWidth="900.0" VBox.vgrow="ALWAYS">
                <columns>
                   <TableColumn fx:id="colDNI" prefWidth="75.0" text="DNI" />
                   <TableColumn fx:id="colNombre" prefWidth="75.0" text="Nombre" />

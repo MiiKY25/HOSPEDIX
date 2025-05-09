@@ -29,9 +29,6 @@ public class ControllerEmpleados {
     private Button btnAniadir;
 
     @FXML
-    private Button btnLimpiar;
-
-    @FXML
     private TableColumn<Empleado, String> colApellidos;
 
     @FXML
