@@ -54,8 +54,14 @@ public class ControllerHabitaciones {
             if (habitacionSeleccionada != null) {
                 txtHabitacion.setText(String.valueOf(habitacionSeleccionada.getNumHabitacion()));
                 txtPrecio.setText(String.valueOf(habitacionSeleccionada.getPrecio()));
-                comboEstado.setValue(habitacionSeleccionada.getEstado());
-                comboTipo.setValue(habitacionSeleccionada.getTipo());
+
+                // Forzar refresco de ComboBox
+                comboEstado.getSelectionModel().clearSelection();
+                comboEstado.getSelectionModel().select(habitacionSeleccionada.getEstado());
+
+                comboTipo.getSelectionModel().clearSelection();
+                comboTipo.getSelectionModel().select(habitacionSeleccionada.getTipo());
+
                 txtHabitacion.setDisable(true);
 
                 btnEditar.setDisable(false);
@@ -66,12 +72,13 @@ public class ControllerHabitaciones {
     }
 
     private void cargarHabitaciones() {
-        tablaHabitacion.setItems(DaoHabitacion.todasHabitaciones());
         tablaHabitacion.getItems().setAll(DaoHabitacion.todasHabitaciones());
     }
 
     @FXML
     void accionAniadir(javafx.event.ActionEvent event) {
+        if (!validarCampos()) return;
+
         try {
             int num = Integer.parseInt(txtHabitacion.getText().trim());
             double precio = Double.parseDouble(txtPrecio.getText().trim());
@@ -105,6 +112,8 @@ public class ControllerHabitaciones {
             return;
         }
 
+        if (!validarCampos()) return;
+
         try {
             double nuevoPrecio = Double.parseDouble(txtPrecio.getText().trim());
             String nuevoEstado = comboEstado.getValue();
@@ -131,7 +140,6 @@ public class ControllerHabitaciones {
         }
     }
 
-
     @FXML
     void accionEliminar(javafx.event.ActionEvent event) {
         if (habitacionSeleccionada == null) {
@@ -144,12 +152,11 @@ public class ControllerHabitaciones {
             mostrarInfo("Habitación eliminada correctamente.");
             limpiarCampos();
             cargarHabitaciones();
-            estadoInicialBotones(); // ← Aquí también
+            estadoInicialBotones();
         } else {
             mostrarError("Error al eliminar la habitación.");
         }
     }
-
 
     @FXML
     void accionVolver(javafx.event.ActionEvent event) {
@@ -163,6 +170,28 @@ public class ControllerHabitaciones {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private boolean validarCampos() {
+        String habitacionStr = txtHabitacion.getText().trim();
+        String precioStr = txtPrecio.getText().trim();
+        String estado = comboEstado.getValue();
+        String tipo = comboTipo.getValue();
+
+        if (habitacionStr.isEmpty() || precioStr.isEmpty() || estado == null || tipo == null) {
+            mostrarError("Todos los campos son obligatorios.");
+            return false;
+        }
+
+        try {
+            Integer.parseInt(habitacionStr);
+            Double.parseDouble(precioStr);
+        } catch (NumberFormatException e) {
+            mostrarError("Número de habitación y precio deben ser válidos.");
+            return false;
+        }
+
+        return true;
     }
 
     private void mostrarError(String mensaje) {
