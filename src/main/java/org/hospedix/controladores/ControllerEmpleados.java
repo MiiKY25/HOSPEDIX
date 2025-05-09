@@ -97,19 +97,33 @@ public class ControllerEmpleados {
             }else {
                 mostrarError("Ya existe un empleado con el DNI: "+txtDNI.getText());
             }
-
-
         }else {
             mostrarError(error);
         }
-
-
-
     }
 
     @FXML
     void accionEditar(ActionEvent event) {
-        // Implementación pendiente
+        Empleado e=tablaEmpleados.getSelectionModel().getSelectedItem();
+        if (e!=null){
+            String error=validarDatos();
+            if (error.isEmpty()){
+                Empleado EmpleadoNuevo=new Empleado(e.getDni(),txtNombre.getText(),txtApellidos.getText(),Integer.parseInt(txtTelefono.getText()),txtDireccion.getText(),comboCargo.getValue(),txtHorario.getText());
+                Boolean estado = DaoEmpleado.actualizarEmpleado(EmpleadoNuevo);
+                if (estado) {
+                    mostrarInfo("Emplado editado correctamente");
+                    limpiarCampos();
+                    cargarEmpleados();
+                    estadoInicialBotones();
+                } else {
+                    mostrarError("Error al editar el Empleado");
+                }
+            }else{
+                mostrarError(error);
+            }
+        }else {
+            mostrarError("Selecciona un Empleado");
+        }
     }
 
     @FXML
@@ -189,6 +203,7 @@ public class ControllerEmpleados {
     void cargarEmpleados() {
         ObservableList<Empleado> listaEmpleados = DaoEmpleado.todosEmpleados();
         tablaEmpleados.setItems(listaEmpleados);
+        tablaEmpleados.refresh();
     }
 
     private void configurarEventosTabla() {
@@ -232,6 +247,7 @@ public class ControllerEmpleados {
         comboCargo.getSelectionModel().selectFirst();
         empleadoSeleccionado=null;
         txtDNI.setDisable(false);
+        btnAniadir.setDisable(false);
     }
 
     /**
