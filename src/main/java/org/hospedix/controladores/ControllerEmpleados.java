@@ -111,7 +111,7 @@ public class ControllerEmpleados {
                 Empleado EmpleadoNuevo=new Empleado(e.getDni(),txtNombre.getText(),txtApellidos.getText(),Integer.parseInt(txtTelefono.getText()),txtDireccion.getText(),comboCargo.getValue(),txtHorario.getText());
                 Boolean estado = DaoEmpleado.actualizarEmpleado(EmpleadoNuevo);
                 if (estado) {
-                    mostrarInfo("Emplado editado correctamente");
+                    mostrarInfo("Empleado editado correctamente");
                     limpiarCampos();
                     cargarEmpleados();
                     estadoInicialBotones();
@@ -128,7 +128,20 @@ public class ControllerEmpleados {
 
     @FXML
     void accionEliminar(ActionEvent event) {
-        // Implementación pendiente
+        Empleado e=tablaEmpleados.getSelectionModel().getSelectedItem();
+        if (e!=null){
+                Boolean estado = DaoEmpleado.eliminarEmpleado(e.getDni());
+                if (estado) {
+                    mostrarInfo("Empleado eliminado correctamente");
+                    limpiarCampos();
+                    cargarEmpleados();
+                    estadoInicialBotones();
+                } else {
+                    mostrarError("Error al eliminar el Empleado");
+                }
+        }else {
+            mostrarError("Selecciona un Empleado");
+        }
     }
 
     @FXML

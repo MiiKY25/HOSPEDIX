@@ -111,5 +111,22 @@ public class DaoEmpleado {
         return false;
     }
 
+    public static boolean eliminarEmpleado(String dni) {
+        ConexionBBDD connection;
+        try {
+            connection = new ConexionBBDD();
+            String sql = "DELETE FROM empleados WHERE dni = ?";
+            PreparedStatement pstmt = connection.getConnection().prepareStatement(sql);
+            pstmt.setString(1, dni);
+            int filas = pstmt.executeUpdate();
+            pstmt.close();
+            connection.CloseConexion();
+            return filas > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 
 }
