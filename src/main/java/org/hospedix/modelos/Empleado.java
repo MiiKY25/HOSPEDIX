@@ -9,7 +9,7 @@ public class Empleado {
     private int telefono;
     private String direccion;
     private String cargo;
-    private String horarioTrabajo;
+    private String horario_trabajo;
 
     // Constructor vacío
     public Empleado() {}
@@ -22,7 +22,7 @@ public class Empleado {
         this.telefono = telefono;
         this.direccion = direccion;
         this.cargo = cargo;
-        this.horarioTrabajo = horarioTrabajo;
+        this.horario_trabajo = horarioTrabajo;
     }
 
     // Getters y Setters
@@ -74,12 +74,12 @@ public class Empleado {
         this.cargo = cargo;
     }
 
-    public String getHorarioTrabajo() {
-        return horarioTrabajo;
+    public String getHorario_trabajo() {
+        return horario_trabajo;
     }
 
-    public void setHorarioTrabajo(String horarioTrabajo) {
-        this.horarioTrabajo = horarioTrabajo;
+    public void setHorario_trabajo(String horario_trabajo) {
+        this.horario_trabajo = horario_trabajo;
     }
 
     // equals y hashCode (basado en dni)

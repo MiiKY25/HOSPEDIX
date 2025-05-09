@@ -5,6 +5,7 @@ module org.hospedix {
 
 
     opens org.hospedix.controladores to javafx.fxml;
+    opens org.hospedix.modelos to javafx.base;
     opens org.hospedix to javafx.fxml;
     exports org.hospedix;
 }

@@ -8,14 +8,14 @@ CREATE TABLE empleados (
     apellido VARCHAR(50),
     telefono VARCHAR(20),
     direccion VARCHAR(200),
-    cargo ENUM('recepcionista', 'gerente', 'limpieza', 'mantenimiento', 'hostelería', 'otros'),
+    cargo ENUM('Recepcionista', 'Gerente', 'Limpieza', 'Mantenimiento', 'Hostelería', 'Otros'),
     horario_trabajo VARCHAR(100)
 );
 
 CREATE TABLE habitaciones (
     num_habitacion INT PRIMARY KEY,
-    estado ENUM('disponible', 'ocupada', 'mantenimiento'),
-    tipo ENUM('individual', 'doble', 'suite'),
+    estado ENUM('Disponible', 'Ocupada', 'Mantenimiento'),
+    tipo ENUM('Individual', 'Doble', 'Suite'),
     precio DECIMAL(10,2)
 );
 
@@ -32,7 +32,7 @@ CREATE TABLE reservas (
     dni_huesped VARCHAR(20),
     fecha_checkin DATE,
     fecha_checkout DATE,
-    estado_pago ENUM('pagado', 'pendiente', 'cancelado'),
+    estado_pago ENUM('Pagado', 'Pendiente', 'Cancelado'),
     cantidad_personas INT,
     precio INT,
     extras INT,
@@ -42,10 +42,10 @@ CREATE TABLE reservas (
 
 CREATE TABLE incidencias (
     id_incidencia INT AUTO_INCREMENT PRIMARY KEY,
-    tipo_incidencia ENUM('limpieza', 'mantenimiento', 'otros'),
+    tipo_incidencia ENUM('Limpieza', 'Mantenimiento', 'Otros'),
     descripcion VARCHAR(100),
     fecha_reporte DATE,
     num_habitacion INT,
-    estado ENUM('abierto', 'cerrado'),
+    estado ENUM('Abierto', 'Cerrado'),
     FOREIGN KEY (num_habitacion) REFERENCES habitaciones(num_habitacion)
 );

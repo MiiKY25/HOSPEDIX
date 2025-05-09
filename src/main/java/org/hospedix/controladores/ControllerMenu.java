@@ -7,6 +7,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.Node;
 import javafx.stage.Stage;
+import org.hospedix.modelos.Empleado;
+import org.hospedix.sesion.Sesion;
 
 import java.io.IOException;
 
@@ -57,6 +59,15 @@ public class ControllerMenu {
 
     @FXML
     void accionVolver(ActionEvent event) {
+        Sesion.setEmpleadoActual(null);
         cambiarVentana("inicio.fxml", event, "Inicio de Sesión");
+    }
+
+    @FXML
+    private void initialize() {
+        Empleado empleado = Sesion.getEmpleadoActual();
+        if (empleado != null) {
+            txtEmpleado.setText(empleado.getNombre().toUpperCase());
+        }
     }
 }
