@@ -71,7 +71,37 @@ public class ControllerEmpleados {
 
     @FXML
     void accionAniadir(ActionEvent event) {
-        // Implementación pendiente
+        String error=validarDatos();
+        if (error.isEmpty()){
+            Empleado empleado=DaoEmpleado.empleadoDNI(txtDNI.getText());
+            if (empleado==null){
+                //Crear Empleado
+                Empleado e=new Empleado(txtDNI.getText(),txtNombre.getText(),txtApellidos.getText(),Integer.parseInt(txtTelefono.getText()),txtDireccion.getText(),comboCargo.getValue(),txtHorario.getText());
+                Boolean estado = DaoEmpleado.aniadirEmpleado(e);
+                if (estado) {
+                    mostrarInfo("Emplado creado correctamente");
+                    txtDNI.setText("");
+                    txtNombre.setText("");
+                    txtApellidos.setText("");
+                    txtTelefono.setText("");
+                    txtHorario.setText("");
+                    txtDireccion.setText("");
+                    comboCargo.getSelectionModel().selectFirst();
+                    cargarEmpleados();
+                } else {
+                    mostrarError("Error al crear el Empleado");
+                }
+            }else {
+                mostrarError("Ya existe un empleado con el DNI: "+txtDNI.getText());
+            }
+
+
+        }else {
+            mostrarError(error);
+        }
+
+
+
     }
 
     @FXML
@@ -98,9 +128,85 @@ public class ControllerEmpleados {
         }
     }
 
+    public String validarDatos() {
+        String error = "";
+
+        // Validar DNI
+        String dni = txtDNI.getText().trim();
+        if (dni.isEmpty()) {
+            error += "El campo 'DNI' no puede estar vacío.\n";
+        } else if (!dni.matches("\\d{8}[A-Za-z]")) {
+            error += "El campo 'DNI' debe tener 8 números seguidos de una letra (ej: 12345678A).\n";
+        }
+
+        // Validar nombre
+        if (txtNombre.getText().trim().isEmpty()) {
+            error += "El campo 'Nombre' no puede estar vacío.\n";
+        }
+
+        // Validar apellidos
+        if (txtApellidos.getText().trim().isEmpty()) {
+            error += "El campo 'Apellidos' no puede estar vacío.\n";
+        }
+
+        // Validar dirección
+        if (txtDireccion.getText().trim().isEmpty()) {
+            error += "El campo 'Dirección' no puede estar vacío.\n";
+        }
+
+        // Validar horario
+        if (txtHorario.getText().trim().isEmpty()) {
+            error += "El campo 'Horario' no puede estar vacío.\n";
+        }
+
+        // Validar teléfono
+        String telefono = txtTelefono.getText().trim();
+        if (telefono.isEmpty()) {
+            error += "El campo 'Teléfono' no puede estar vacío.\n";
+        } else if (!telefono.matches("\\d{9}")) {
+            error += "El teléfono debe tener exactamente 9 dígitos numéricos.\n";
+        }
+
+        // Validar cargo
+        String cargo = comboCargo.getValue();
+        if (cargo == null || cargo.trim().isEmpty()) {
+            error += "Debes seleccionar un cargo.\n";
+        }
+
+        return error;
+    }
+
+
+
     void cargarEmpleados() {
         ObservableList<Empleado> listaEmpleados = DaoEmpleado.todosEmpleados();
         tablaEmpleados.setItems(listaEmpleados);
+    }
+
+    /**
+     * Muestra un mensaje de error en una alerta.
+     *
+     * @param error el mensaje de error a mostrar.
+     */
+    void mostrarError(String error) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText(null);
+        alert.setTitle("Error");
+        alert.setContentText(error);
+        alert.showAndWait();
+    }
+
+    /**
+     * Muestra un mensaje informativo en una alerta.
+     *
+     * @param info mensaje de información a mostrar.
+     */
+    void mostrarInfo(String info) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(null);
+        alert.setTitle("Informacion");
+        alert.setContentText(info);
+        alert.showAndWait();
     }
 
     @FXML

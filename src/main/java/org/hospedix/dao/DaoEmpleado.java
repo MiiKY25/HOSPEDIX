@@ -63,4 +63,29 @@ public class DaoEmpleado {
         }
         return lista;
     }
+
+    public static boolean aniadirEmpleado(Empleado e) {
+        ConexionBBDD connection;
+        int resul = 0;
+        try {
+            connection = new ConexionBBDD();
+            String consulta = "INSERT INTO empleados (dni, nombre,apellido,telefono,direccion,cargo,horario_trabajo) VALUES (?,?,?,?,?,?,?)";
+            PreparedStatement pstmt = connection.getConnection().prepareStatement(consulta);
+            pstmt.setString(1, e.getDni());
+            pstmt.setString(2, e.getNombre());
+            pstmt.setString(3, e.getApellido());
+            pstmt.setInt(4, e.getTelefono());
+            pstmt.setString(5, e.getDireccion());
+            pstmt.setString(6, e.getCargo());
+            pstmt.setString(7, e.getHorario_trabajo());
+            resul = pstmt.executeUpdate();
+            pstmt.close();
+            connection.CloseConexion();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return resul > 0;
+    }
+
+
 }
