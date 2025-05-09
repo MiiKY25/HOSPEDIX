@@ -13,6 +13,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import org.hospedix.dao.DaoEmpleado;
 import org.hospedix.modelos.Empleado;
+import org.hospedix.modelos.Habitacion;
 
 import java.io.IOException;
 
@@ -23,6 +24,9 @@ public class ControllerEmpleados {
 
     @FXML
     private Button btnEliminar;
+
+    @FXML
+    private Button btnAniadir;
 
     @FXML
     private TableColumn<Empleado, String> colApellidos;
@@ -69,6 +73,8 @@ public class ControllerEmpleados {
     @FXML
     private TextField txtTelefono;
 
+    private Empleado empleadoSeleccionado = null;
+
     @FXML
     void accionAniadir(ActionEvent event) {
         String error=validarDatos();
@@ -80,13 +86,7 @@ public class ControllerEmpleados {
                 Boolean estado = DaoEmpleado.aniadirEmpleado(e);
                 if (estado) {
                     mostrarInfo("Emplado creado correctamente");
-                    txtDNI.setText("");
-                    txtNombre.setText("");
-                    txtApellidos.setText("");
-                    txtTelefono.setText("");
-                    txtHorario.setText("");
-                    txtDireccion.setText("");
-                    comboCargo.getSelectionModel().selectFirst();
+                    limpiarCampos();
                     cargarEmpleados();
                 } else {
                     mostrarError("Error al crear el Empleado");
@@ -94,24 +94,56 @@ public class ControllerEmpleados {
             }else {
                 mostrarError("Ya existe un empleado con el DNI: "+txtDNI.getText());
             }
-
-
         }else {
             mostrarError(error);
         }
-
-
-
     }
 
     @FXML
     void accionEditar(ActionEvent event) {
-        // Implementación pendiente
+        Empleado e=tablaEmpleados.getSelectionModel().getSelectedItem();
+        if (e!=null){
+            String error=validarDatos();
+            if (error.isEmpty()){
+                Empleado EmpleadoNuevo=new Empleado(e.getDni(),txtNombre.getText(),txtApellidos.getText(),Integer.parseInt(txtTelefono.getText()),txtDireccion.getText(),comboCargo.getValue(),txtHorario.getText());
+                Boolean estado = DaoEmpleado.actualizarEmpleado(EmpleadoNuevo);
+                if (estado) {
+                    mostrarInfo("Empleado editado correctamente");
+                    limpiarCampos();
+                    cargarEmpleados();
+                    estadoInicialBotones();
+                } else {
+                    mostrarError("Error al editar el Empleado");
+                }
+            }else{
+                mostrarError(error);
+            }
+        }else {
+            mostrarError("Selecciona un Empleado");
+        }
     }
 
     @FXML
     void accionEliminar(ActionEvent event) {
-        // Implementación pendiente
+        Empleado e=tablaEmpleados.getSelectionModel().getSelectedItem();
+        if (e!=null){
+                Boolean estado = DaoEmpleado.eliminarEmpleado(e.getDni());
+                if (estado) {
+                    mostrarInfo("Empleado eliminado correctamente");
+                    limpiarCampos();
+                    cargarEmpleados();
+                    estadoInicialBotones();
+                } else {
+                    mostrarError("Error al eliminar el Empleado");
+                }
+        }else {
+            mostrarError("Selecciona un Empleado");
+        }
+    }
+
+    @FXML
+    void accionLimpiar(ActionEvent event) {
+        limpiarCampos();
     }
 
     @FXML
@@ -181,6 +213,51 @@ public class ControllerEmpleados {
     void cargarEmpleados() {
         ObservableList<Empleado> listaEmpleados = DaoEmpleado.todosEmpleados();
         tablaEmpleados.setItems(listaEmpleados);
+        tablaEmpleados.refresh();
+    }
+
+    private void configurarEventosTabla() {
+        tablaEmpleados.setOnMouseClicked(event -> {
+            empleadoSeleccionado = tablaEmpleados.getSelectionModel().getSelectedItem();
+
+            if (empleadoSeleccionado != null) {
+                txtDNI.setText(String.valueOf(empleadoSeleccionado.getDni()));
+                txtDireccion.setText(String.valueOf(empleadoSeleccionado.getDireccion()));
+                txtHorario.setText(String.valueOf(empleadoSeleccionado.getHorario_trabajo()));
+                txtTelefono.setText(String.valueOf(empleadoSeleccionado.getTelefono()));
+                txtApellidos.setText(String.valueOf(empleadoSeleccionado.getApellido()));
+                txtNombre.setText(String.valueOf(empleadoSeleccionado.getNombre()));
+
+                // Forzar refresco de ComboBox
+                comboCargo.getSelectionModel().clearSelection();
+                comboCargo.getSelectionModel().select(empleadoSeleccionado.getCargo());
+
+                txtDNI.setDisable(true);
+
+                btnEditar.setDisable(false);
+                btnEliminar.setDisable(false);
+                btnAniadir.setDisable(true);
+            }
+        });
+    }
+
+    private void estadoInicialBotones() {
+        btnEditar.setDisable(true);
+        btnEliminar.setDisable(true);
+        btnAniadir.setDisable(false);
+    }
+
+    private void limpiarCampos() {
+        txtDNI.setText("");
+        txtNombre.setText("");
+        txtApellidos.setText("");
+        txtTelefono.setText("");
+        txtHorario.setText("");
+        txtDireccion.setText("");
+        comboCargo.getSelectionModel().selectFirst();
+        empleadoSeleccionado=null;
+        txtDNI.setDisable(false);
+        btnAniadir.setDisable(false);
     }
 
     /**
@@ -226,6 +303,8 @@ public class ControllerEmpleados {
         ));
         comboCargo.getSelectionModel().selectFirst();
 
+        configurarEventosTabla();
         cargarEmpleados();
+        estadoInicialBotones();
     }
 }

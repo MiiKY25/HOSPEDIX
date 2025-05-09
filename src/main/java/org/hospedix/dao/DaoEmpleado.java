@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.hospedix.bbdd.ConexionBBDD;
 import org.hospedix.modelos.Empleado;
+import org.hospedix.modelos.Habitacion;
 
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
@@ -53,7 +54,7 @@ public class DaoEmpleado {
                 int telefono = rs.getInt(4);
                 String direccion = rs.getString(5);
                 String cargo= rs.getString(6);
-                String horario_trabajo= rs.getString(6);
+                String horario_trabajo= rs.getString(7);
                 Empleado e=new Empleado(dni,nombre,apellido,telefono,direccion,cargo,horario_trabajo);
                 lista.add(e);
             }
@@ -85,6 +86,46 @@ public class DaoEmpleado {
             ex.printStackTrace();
         }
         return resul > 0;
+    }
+
+    public static boolean actualizarEmpleado(Empleado e) {
+        ConexionBBDD connection;
+        try {
+            connection = new ConexionBBDD();
+            String sql = "UPDATE empleados SET nombre = ?, apellido = ?, telefono = ?, direccion = ?, cargo = ?, horario_trabajo = ? WHERE dni = ?";
+            PreparedStatement pstmt = connection.getConnection().prepareStatement(sql);
+            pstmt.setString(1, e.getNombre());
+            pstmt.setString(2, e.getApellido());
+            pstmt.setInt(3, e.getTelefono());
+            pstmt.setString(4, e.getDireccion());
+            pstmt.setString(5, e.getCargo());
+            pstmt.setString(6, e.getHorario_trabajo());
+            pstmt.setString(7, e.getDni());
+            int filas = pstmt.executeUpdate();
+            pstmt.close();
+            connection.CloseConexion();
+            return filas > 0;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
+    public static boolean eliminarEmpleado(String dni) {
+        ConexionBBDD connection;
+        try {
+            connection = new ConexionBBDD();
+            String sql = "DELETE FROM empleados WHERE dni = ?";
+            PreparedStatement pstmt = connection.getConnection().prepareStatement(sql);
+            pstmt.setString(1, dni);
+            int filas = pstmt.executeUpdate();
+            pstmt.close();
+            connection.CloseConexion();
+            return filas > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
 
