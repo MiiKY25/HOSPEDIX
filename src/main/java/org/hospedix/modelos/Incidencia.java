@@ -1,24 +1,24 @@
 package org.hospedix.modelos;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class Incidencia {
     private int idIncidencia;
     private String tipoIncidencia;
     private String descripcion;
-    private Date fechaReporte;
-    private int numHabitacion;
+    private LocalDate fechaReporte;
+    private Habitacion habitacion;
     private String estado;
 
     public Incidencia() {}
 
-    public Incidencia(int idIncidencia, String tipoIncidencia, String descripcion, Date fechaReporte, int numHabitacion, String estado) {
+    public Incidencia(int idIncidencia, String tipoIncidencia, String descripcion, LocalDate fechaReporte, Habitacion habitacion, String estado) {
         this.idIncidencia = idIncidencia;
         this.tipoIncidencia = tipoIncidencia;
         this.descripcion = descripcion;
         this.fechaReporte = fechaReporte;
-        this.numHabitacion = numHabitacion;
+        this.habitacion = habitacion;
         this.estado = estado;
     }
 
@@ -46,20 +46,20 @@ public class Incidencia {
         this.descripcion = descripcion;
     }
 
-    public Date getFechaReporte() {
+    public LocalDate getFechaReporte() {
         return fechaReporte;
     }
 
-    public void setFechaReporte(Date fechaReporte) {
+    public void setFechaReporte(LocalDate fechaReporte) {
         this.fechaReporte = fechaReporte;
     }
 
-    public int getNumHabitacion() {
-        return numHabitacion;
+    public Habitacion getHabitacion() {
+        return habitacion;
     }
 
-    public void setNumHabitacion(int numHabitacion) {
-        this.numHabitacion = numHabitacion;
+    public void setHabitacion(Habitacion habitacion) {
+        this.habitacion = habitacion;
     }
 
     public String getEstado() {
