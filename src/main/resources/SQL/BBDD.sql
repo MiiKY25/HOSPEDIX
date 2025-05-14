@@ -1,3 +1,5 @@
+DROP DATABASE hospedix;
+
 CREATE DATABASE IF NOT EXISTS hospedix;
 
 USE hospedix;
