@@ -258,6 +258,8 @@ public class ControllerEmpleados {
         empleadoSeleccionado=null;
         txtDNI.setDisable(false);
         btnAniadir.setDisable(false);
+        btnEliminar.setDisable(true);
+        btnEditar.setDisable(true);
     }
 
     /**

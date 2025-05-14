@@ -206,6 +206,9 @@ public class ControllerHabitaciones {
         comboTipo.getSelectionModel().selectFirst();
         habitacionSeleccionada = null;
         txtHabitacion.setDisable(false);
+        btnAniadir.setDisable(false);
+        btnEliminar.setDisable(true);
+        btnEditar.setDisable(true);
     }
 
     private void estadoInicialBotones() {
