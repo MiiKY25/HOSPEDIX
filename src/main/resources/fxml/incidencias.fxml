@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hospedix.controladores.ControllerIncidencias">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hospedix.controladores.ControllerIncidencias">
    <children>
       <GridPane alignment="CENTER_RIGHT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="149.0" prefWidth="900.0">
          <columnConstraints>
@@ -120,6 +120,7 @@
                   <Button mnemonicParsing="false" onAction="#accionAniadir" prefHeight="26.0" prefWidth="100.0" text="Añadir" />
                   <Button fx:id="btnEditar" disable="true" mnemonicParsing="false" onAction="#accionEditar" prefHeight="26.0" prefWidth="100.0" text="Editar" />
                   <Button fx:id="btnEliminar" disable="true" mnemonicParsing="false" onAction="#accionEliminar" prefHeight="26.0" prefWidth="100.0" text="Eliminar" />
+                  <Button fx:id="btnLimpiar" mnemonicParsing="false" onAction="#accionLimpiar" text="Limpiar" />
                </children>
             </HBox>
             <TableView fx:id="tablaIncidencias" prefHeight="226.0" prefWidth="900.0">

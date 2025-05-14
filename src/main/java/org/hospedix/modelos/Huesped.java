@@ -6,11 +6,11 @@ public class Huesped {
     private String dni;
     private String nombre;
     private String apellido;
-    private String telefono;
+    private int telefono;
 
     public Huesped() {}
 
-    public Huesped(String dni, String nombre, String apellido, String telefono) {
+    public Huesped(String dni, String nombre, String apellido, int telefono) {
         this.dni = dni;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -41,11 +41,11 @@ public class Huesped {
         this.apellido = apellido;
     }
 
-    public String getTelefono() {
+    public int getTelefono() {
         return telefono;
     }
 
-    public void setTelefono(String telefono) {
+    public void setTelefono(int telefono) {
         this.telefono = telefono;
     }
 
