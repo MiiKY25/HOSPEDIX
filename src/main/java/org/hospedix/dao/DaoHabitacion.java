@@ -116,4 +116,26 @@ public class DaoHabitacion {
         return false;
     }
 
+    public static ObservableList<Integer> obtenerNumerosHabitaciones() {
+        ObservableList<Integer> numeros = FXCollections.observableArrayList();
+        ConexionBBDD connection;
+        try {
+            connection = new ConexionBBDD();
+            String sql = "SELECT num_habitacion FROM habitaciones";
+            PreparedStatement pstmt = connection.getConnection().prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                numeros.add(rs.getInt("num_habitacion"));
+            }
+
+            pstmt.close();
+            connection.CloseConexion();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return numeros;
+    }
+
+
 }

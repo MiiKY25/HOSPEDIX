@@ -35,6 +35,28 @@ public class DaoHuesped {
         return null;
     }
 
+    public static ObservableList<String> obtenerDnisHuespedes() {
+        ObservableList<String> dnis = FXCollections.observableArrayList();
+        ConexionBBDD connection;
+        try {
+            connection = new ConexionBBDD();
+            String sql = "SELECT dni FROM huesped";
+            PreparedStatement pstmt = connection.getConnection().prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                dnis.add(rs.getString("dni"));
+            }
+
+            pstmt.close();
+            connection.CloseConexion();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return dnis;
+    }
+
+
     public static ObservableList<Huesped> todosHuesped() {
         ObservableList<Huesped> lista = FXCollections.observableArrayList();
         ConexionBBDD connection;
