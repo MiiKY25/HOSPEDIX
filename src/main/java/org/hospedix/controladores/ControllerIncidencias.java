@@ -73,6 +73,11 @@ public class ControllerIncidencias {
     }
 
     @FXML
+    void accionLimpiar(ActionEvent event) {
+        //limpiarCampos();
+    }
+
+    @FXML
     void accionVolver(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/menu.fxml"));
