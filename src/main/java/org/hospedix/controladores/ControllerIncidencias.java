@@ -79,6 +79,7 @@ public class ControllerIncidencias {
             Incidencia i=new Incidencia(0,comboTipo.getValue(),txtDescripcion.getText(),null,comboHabitacion.getValue(),comboEstado.getValue());
             Boolean estado = DaoIncidencia.aniadirIncidencia(i);
             if (estado) {
+                DaoHabitacion.habitacionMantenimiento(i.getHabitacion().getNumHabitacion());
                 mostrarInfo("Incidencia creada correctamente");
                 limpiarCampos();
                 cargarIncidencias();

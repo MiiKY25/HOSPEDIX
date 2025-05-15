@@ -159,6 +159,23 @@ public class DaoHabitacion {
         return false;
     }
 
+    public static boolean habitacionMantenimiento(int id) {
+        ConexionBBDD connection;
+        try {
+            connection = new ConexionBBDD();
+            String sql = "UPDATE habitaciones SET estado = 'Mantenimiento' WHERE num_habitacion = ?";
+            PreparedStatement pstmt = connection.getConnection().prepareStatement(sql);
+            pstmt.setInt(1, id);
+            int filas = pstmt.executeUpdate();
+            pstmt.close();
+            connection.CloseConexion();
+            return filas > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public static boolean eliminarHabitacion(int numero) {
         ConexionBBDD connection;
         try {
