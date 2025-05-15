@@ -65,6 +65,27 @@ public class DaoIncidencia {
         return resul > 0;
     }
 
+    public static boolean actualizarIncidencia(Incidencia i) {
+        ConexionBBDD connection;
+        try {
+            connection = new ConexionBBDD();
+            String sql = "UPDATE incidencias SET tipo_incidencia = ?, descripcion = ?, num_habitacion = ? , estado = ? WHERE id_incidencia = ?";
+            PreparedStatement pstmt = connection.getConnection().prepareStatement(sql);
+            pstmt.setString(1, i.getTipoIncidencia());
+            pstmt.setString(2, i.getDescripcion());
+            pstmt.setInt(3, i.getHabitacion().getNumHabitacion());
+            pstmt.setString(4, i.getEstado());
+            pstmt.setInt(5, i.getIdIncidencia());
+            int filas = pstmt.executeUpdate();
+            pstmt.close();
+            connection.CloseConexion();
+            return filas > 0;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
 
 
 }

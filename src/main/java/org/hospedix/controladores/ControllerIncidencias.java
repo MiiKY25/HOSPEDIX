@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import org.hospedix.dao.DaoEmpleado;
 import org.hospedix.dao.DaoHabitacion;
 import org.hospedix.dao.DaoIncidencia;
 import org.hospedix.modelos.Habitacion;
@@ -92,7 +93,26 @@ public class ControllerIncidencias {
 
     @FXML
     void accionEditar(ActionEvent event) {
-
+        Incidencia i=tablaIncidencias.getSelectionModel().getSelectedItem();
+        if (i!=null){
+            String error=validarDatos();
+            if (error.isEmpty()){
+                Incidencia IncidenciaNueva=new Incidencia(Integer.parseInt(txtID.getText()),comboTipo.getValue(),txtDescripcion.getText(),fecha.getValue(),comboHabitacion.getValue(),comboEstado.getValue());
+                Boolean estado = DaoIncidencia.actualizarIncidencia(IncidenciaNueva);
+                if (estado) {
+                    mostrarInfo("Incidencia editada correctamente");
+                    limpiarCampos();
+                    cargarIncidencias();
+                    estadoInicialBotones();
+                } else {
+                    mostrarError("Error al editar la Incidencia");
+                }
+            }else{
+                mostrarError(error);
+            }
+        }else {
+            mostrarError("Selecciona una Incidencia");
+        }
     }
 
     @FXML
