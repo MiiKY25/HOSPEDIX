@@ -116,4 +116,56 @@ public class DaoHuesped {
         }
         return false;
     }
+
+    public static boolean huespedTieneReservas(String dni) {
+        ConexionBBDD connection;
+        boolean tiene = false;
+        try {
+            connection = new ConexionBBDD();
+            String consulta = "SELECT COUNT(*) FROM reservas WHERE dni_huesped = ?";
+            PreparedStatement pstmt = connection.getConnection().prepareStatement(consulta);
+            pstmt.setString(1, dni);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                tiene = rs.getInt(1) > 0;
+            }
+            pstmt.close();
+            connection.CloseConexion();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return tiene;
+    }
+
+    public static boolean eliminarHuespedYReservas(String dni) {
+        ConexionBBDD connection;
+        try {
+            connection = new ConexionBBDD();
+            connection.getConnection().setAutoCommit(false); // Iniciar transacción
+
+            // Eliminar reservas primero
+            String deleteReservas = "DELETE FROM reservas WHERE dni_huesped = ?";
+            PreparedStatement pstmt1 = connection.getConnection().prepareStatement(deleteReservas);
+            pstmt1.setString(1, dni);
+            pstmt1.executeUpdate();
+            pstmt1.close();
+
+            // Luego eliminar al huésped
+            String deleteHuesped = "DELETE FROM huesped WHERE dni = ?";
+            PreparedStatement pstmt2 = connection.getConnection().prepareStatement(deleteHuesped);
+            pstmt2.setString(1, dni);
+            int filas = pstmt2.executeUpdate();
+            pstmt2.close();
+
+            connection.getConnection().commit(); // Confirmar transacción
+            connection.CloseConexion();
+
+            return filas > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }

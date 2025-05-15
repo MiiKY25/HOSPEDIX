@@ -15,6 +15,7 @@ import org.hospedix.modelos.Empleado;
 import org.hospedix.modelos.Huesped;
 
 import java.io.IOException;
+import java.util.Optional;
 
 public class ControllerHuesped {
 
@@ -105,22 +106,55 @@ public class ControllerHuesped {
     }
 
     @FXML
-    void accionEliminar(ActionEvent event) {
-        Huesped h=tablaHuesped.getSelectionModel().getSelectedItem();
-        if (h!=null){
-            Boolean estado = DaoHuesped.eliminarHuesped(h.getDni());
-            if (estado) {
-                mostrarInfo("Huesped eliminado correctamente");
-                limpiarCampos();
-                cargarHuesped();
-                estadoInicialBotones();
+    private void accionEliminar() {
+        Huesped seleccionado = tablaHuesped.getSelectionModel().getSelectedItem();
+        if (seleccionado == null) {
+            mostrarAlerta(Alert.AlertType.WARNING, "Ningún huésped seleccionado", "Por favor selecciona un huésped para eliminar.");
+            return;
+        }
+
+        String dni = seleccionado.getDni();
+
+        if (DaoHuesped.huespedTieneReservas(dni)) {
+            Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+            confirm.setTitle("Confirmar eliminación");
+            confirm.setHeaderText("Este huésped tiene reservas vinculadas.");
+            confirm.setContentText("Si continúas, también se eliminarán todas sus reservas.\n¿Deseas continuar?");
+
+            ButtonType btnSi = new ButtonType("Sí", ButtonBar.ButtonData.YES);
+            ButtonType btnNo = new ButtonType("No", ButtonBar.ButtonData.NO);
+            confirm.getButtonTypes().setAll(btnSi, btnNo);
+
+            Optional<ButtonType> resultado = confirm.showAndWait();
+            if (resultado.isPresent() && resultado.get() == btnSi) {
+                if (DaoHuesped.eliminarHuespedYReservas(dni)) {
+                    tablaHuesped.setItems(DaoHuesped.todosHuesped());
+                    mostrarAlerta(Alert.AlertType.INFORMATION, "Éxito", "Huésped y reservas eliminados correctamente.");
+                } else {
+                    mostrarAlerta(Alert.AlertType.ERROR, "Error", "No se pudo eliminar el huésped.");
+                }
             } else {
-                mostrarError("Error al eliminar el Huesped");
+                // Cancelado por el usuario
+                return;
             }
-        }else {
-            mostrarError("Selecciona un Huesped");
+        } else {
+            Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+            confirm.setTitle("Eliminar huésped");
+            confirm.setHeaderText("¿Estás seguro?");
+            confirm.setContentText("Esta acción no se puede deshacer.");
+            Optional<ButtonType> result = confirm.showAndWait();
+
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                if (DaoHuesped.eliminarHuesped(dni)) {
+                    tablaHuesped.setItems(DaoHuesped.todosHuesped());
+                    mostrarAlerta(Alert.AlertType.INFORMATION, "Éxito", "Huésped eliminado correctamente.");
+                } else {
+                    mostrarAlerta(Alert.AlertType.ERROR, "Error", "No se pudo eliminar el huésped.");
+                }
+            }
         }
     }
+
 
     @FXML
     void accionLimpiar(ActionEvent event) {
@@ -238,6 +272,14 @@ public class ControllerHuesped {
         alert.setTitle("Informacion");
         alert.setContentText(info);
         alert.showAndWait();
+    }
+
+    private void mostrarAlerta(Alert.AlertType tipo, String titulo, String mensaje) {
+        Alert alerta = new Alert(tipo);
+        alerta.setTitle(titulo);
+        alerta.setHeaderText(null);
+        alerta.setContentText(mensaje);
+        alerta.showAndWait();
     }
 
     @FXML

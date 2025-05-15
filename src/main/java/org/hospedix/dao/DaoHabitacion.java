@@ -193,4 +193,83 @@ public class DaoHabitacion {
         return false;
     }
 
+    public static boolean habitacionTieneReservas(int numHabitacion) {
+        ConexionBBDD connection;
+        boolean tiene = false;
+        try {
+            connection = new ConexionBBDD();
+            String consulta = "SELECT COUNT(*) FROM reservas WHERE num_habitacion = ?";
+            PreparedStatement pstmt = connection.getConnection().prepareStatement(consulta);
+            pstmt.setInt(1, numHabitacion);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                tiene = rs.getInt(1) > 0;
+            }
+            pstmt.close();
+            connection.CloseConexion();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return tiene;
+    }
+
+    public static boolean habitacionTieneIncidencias(int numHabitacion) {
+        ConexionBBDD connection;
+        boolean tiene = false;
+        try {
+            connection = new ConexionBBDD();
+            String consulta = "SELECT COUNT(*) FROM incidencias WHERE num_habitacion = ?";
+            PreparedStatement pstmt = connection.getConnection().prepareStatement(consulta);
+            pstmt.setInt(1, numHabitacion);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                tiene = rs.getInt(1) > 0;
+            }
+            pstmt.close();
+            connection.CloseConexion();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return tiene;
+    }
+
+    public static boolean eliminarHabitacionYAsociados(int numHabitacion) {
+        ConexionBBDD connection;
+        try {
+            connection = new ConexionBBDD();
+            connection.getConnection().setAutoCommit(false); // Iniciar transacción
+
+            // Eliminar incidencias primero
+            String deleteIncidencias = "DELETE FROM incidencias WHERE num_habitacion = ?";
+            PreparedStatement pstmt1 = connection.getConnection().prepareStatement(deleteIncidencias);
+            pstmt1.setInt(1, numHabitacion);
+            pstmt1.executeUpdate();
+            pstmt1.close();
+
+            // Luego eliminar reservas
+            String deleteReservas = "DELETE FROM reservas WHERE num_habitacion = ?";
+            PreparedStatement pstmt2 = connection.getConnection().prepareStatement(deleteReservas);
+            pstmt2.setInt(1, numHabitacion);
+            pstmt2.executeUpdate();
+            pstmt2.close();
+
+            // Finalmente eliminar la habitación
+            String deleteHabitacion = "DELETE FROM habitaciones WHERE num_habitacion = ?";
+            PreparedStatement pstmt3 = connection.getConnection().prepareStatement(deleteHabitacion);
+            pstmt3.setInt(1, numHabitacion);
+            int filas = pstmt3.executeUpdate();
+            pstmt3.close();
+
+            connection.getConnection().commit(); // Confirmar transacción
+            connection.CloseConexion();
+
+            return filas > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
 }
