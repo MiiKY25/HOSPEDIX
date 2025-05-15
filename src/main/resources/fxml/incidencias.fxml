@@ -74,7 +74,7 @@
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                      <children>
                         <Label alignment="CENTER" prefHeight="18.0" prefWidth="80.0" text="ID Incidencia" textAlignment="RIGHT" />
-                        <TextField fx:id="txtID" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="100.0" />
+                        <TextField fx:id="txtID" alignment="CENTER_RIGHT" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="100.0" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.rowIndex="1">
@@ -104,7 +104,7 @@
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <children>
                         <Label alignment="CENTER" prefHeight="18.0" prefWidth="80.0" text="Fecha" textAlignment="RIGHT" />
-                        <DatePicker fx:id="fecha" prefHeight="25.0" prefWidth="200.0" />
+                        <DatePicker fx:id="fecha" disable="true" prefHeight="25.0" prefWidth="200.0" />
                      </children>
                   </HBox>
                </children>
@@ -117,7 +117,7 @@
             </GridPane>
             <HBox alignment="CENTER" prefHeight="69.0" prefWidth="900.0" spacing="100.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#accionAniadir" prefHeight="26.0" prefWidth="100.0" text="Añadir" />
+                  <Button fx:id="btnAniadir" mnemonicParsing="false" onAction="#accionAniadir" prefHeight="26.0" prefWidth="100.0" text="Añadir" />
                   <Button fx:id="btnEditar" disable="true" mnemonicParsing="false" onAction="#accionEditar" prefHeight="26.0" prefWidth="100.0" text="Editar" />
                   <Button fx:id="btnEliminar" disable="true" mnemonicParsing="false" onAction="#accionEliminar" prefHeight="26.0" prefWidth="100.0" text="Eliminar" />
                   <Button fx:id="btnLimpiar" mnemonicParsing="false" onAction="#accionLimpiar" text="Limpiar" />
