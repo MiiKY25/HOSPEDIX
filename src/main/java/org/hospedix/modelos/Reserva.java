@@ -5,8 +5,8 @@ import java.util.Objects;
 
 public class Reserva {
     private int idReserva;
-    private int numHabitacion;
-    private String dniHuesped;
+    private Habitacion habitacion;
+    private Huesped huesped;
     private Date fechaCheckin;
     private Date fechaCheckout;
     private String estadoPago;
@@ -17,11 +17,11 @@ public class Reserva {
     public Reserva() {
     }
 
-    public Reserva(int idReserva, int numHabitacion, String dniHuesped, Date fechaCheckin, Date fechaCheckout,
+    public Reserva(int idReserva, Habitacion habitacion, Huesped huesped, Date fechaCheckin, Date fechaCheckout,
                    String estadoPago, int cantidadPersonas, int precio, int extras) {
         this.idReserva = idReserva;
-        this.numHabitacion = numHabitacion;
-        this.dniHuesped = dniHuesped;
+        this.habitacion = habitacion;
+        this.huesped = huesped;
         this.fechaCheckin = fechaCheckin;
         this.fechaCheckout = fechaCheckout;
         this.estadoPago = estadoPago;
@@ -38,22 +38,6 @@ public class Reserva {
         this.idReserva = idReserva;
     }
 
-    public int getNumHabitacion() {
-        return numHabitacion;
-    }
-
-    public void setNumHabitacion(int numHabitacion) {
-        this.numHabitacion = numHabitacion;
-    }
-
-    public String getDniHuesped() {
-        return dniHuesped;
-    }
-
-    public void setDniHuesped(String dniHuesped) {
-        this.dniHuesped = dniHuesped;
-    }
-
     public Date getFechaCheckin() {
         return fechaCheckin;
     }
@@ -68,6 +52,22 @@ public class Reserva {
 
     public void setFechaCheckout(Date fechaCheckout) {
         this.fechaCheckout = fechaCheckout;
+    }
+
+    public Habitacion getHabitacion() {
+        return habitacion;
+    }
+
+    public void setHabitacion(Habitacion habitacion) {
+        this.habitacion = habitacion;
+    }
+
+    public Huesped getHuesped() {
+        return huesped;
+    }
+
+    public void setHuesped(Huesped huesped) {
+        this.huesped = huesped;
     }
 
     public String getEstadoPago() {
@@ -113,20 +113,5 @@ public class Reserva {
     @Override
     public int hashCode() {
         return Objects.hash(idReserva);
-    }
-
-    @Override
-    public String toString() {
-        return "Reserva{" +
-                "idReserva=" + idReserva +
-                ", numHabitacion=" + numHabitacion +
-                ", dniHuesped='" + dniHuesped + '\'' +
-                ", fechaCheckin=" + fechaCheckin +
-                ", fechaCheckout=" + fechaCheckout +
-                ", estadoPago='" + estadoPago + '\'' +
-                ", cantidadPersonas=" + cantidadPersonas +
-                ", precio=" + precio +
-                ", extras=" + extras +
-                '}';
     }
 }

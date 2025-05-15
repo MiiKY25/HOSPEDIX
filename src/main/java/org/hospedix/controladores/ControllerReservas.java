@@ -14,6 +14,8 @@ import java.time.ZoneId;
 import org.hospedix.dao.DaoHabitacion;
 import org.hospedix.dao.DaoHuesped;
 import org.hospedix.dao.DaoReserva;
+import org.hospedix.modelos.Habitacion;
+import org.hospedix.modelos.Huesped;
 import org.hospedix.modelos.Reserva;
 
 import java.io.IOException;
@@ -24,8 +26,9 @@ public class ControllerReservas {
     @FXML public Button btnAniadir;
     @FXML private TextField txtID, txtPrecio, txtExtras, txtCantPersonas;
     @FXML private DatePicker fechaIN, fechaOUT;
-    @FXML private ComboBox<Integer> comboHabitacion;
-    @FXML private ComboBox<String> comboCliente, comboEstado;
+    @FXML private ComboBox<Habitacion> comboHabitacion;
+    @FXML private ComboBox<Huesped> comboCliente;
+    @FXML private ComboBox<String> comboEstado;
     @FXML private TableView<Reserva> tablaReservas;
     @FXML private TableColumn<Reserva, Integer> colID, colHabitacion, colPersonas, colPrecio, colExtras;
     @FXML private TableColumn<Reserva, String> colCliente, colEstado;
@@ -37,9 +40,12 @@ public class ControllerReservas {
     @FXML
     public void initialize() {
         comboEstado.setItems(FXCollections.observableArrayList("Pagado", "Pendiente", "Cancelado"));
-        comboHabitacion.setItems(FXCollections.observableArrayList(DaoHabitacion.obtenerNumerosHabitaciones()));
-        comboCliente.setItems(FXCollections.observableArrayList(DaoHuesped.obtenerDnisHuespedes()));
+        comboHabitacion.setItems(FXCollections.observableArrayList(DaoHabitacion.todasHabitaciones()));
+        comboCliente.setItems(FXCollections.observableArrayList(DaoHuesped.todosHuesped()));
+
         comboEstado.getSelectionModel().selectFirst();
+        comboHabitacion.getSelectionModel().selectFirst();
+        comboCliente.getSelectionModel().selectFirst();
 
         configurarTabla();
         configurarEventos();
@@ -63,8 +69,8 @@ public class ControllerReservas {
             reservaSeleccionada = tablaReservas.getSelectionModel().getSelectedItem();
             if (reservaSeleccionada != null) {
                 txtID.setText(String.valueOf(reservaSeleccionada.getIdReserva()));
-                comboHabitacion.setValue(reservaSeleccionada.getNumHabitacion());
-                comboCliente.setValue(reservaSeleccionada.getDniHuesped());
+                comboHabitacion.setValue(reservaSeleccionada.getHabitacion());
+                comboCliente.setValue(reservaSeleccionada.getHuesped());
                 fechaIN.setValue(reservaSeleccionada.getFechaCheckin().toLocalDate());
                 fechaOUT.setValue(reservaSeleccionada.getFechaCheckout().toLocalDate());
                 comboEstado.setValue(reservaSeleccionada.getEstadoPago());
@@ -77,8 +83,6 @@ public class ControllerReservas {
             }
         });
     }
-
-
 
     private void cargarReservas() {
         tablaReservas.getItems().setAll(DaoReserva.todasReservas());
@@ -102,8 +106,6 @@ public class ControllerReservas {
                 Integer.parseInt(txtPrecio.getText()),
                 Integer.parseInt(txtExtras.getText())
         );
-
-
 
         if (DaoReserva.aniadirReserva(r)) {
             mostrarInfo("Reserva añadida correctamente.");

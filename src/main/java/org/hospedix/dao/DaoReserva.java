@@ -25,8 +25,8 @@ public class DaoReserva {
             while (rs.next()) {
                 Reserva r = new Reserva(
                         rs.getInt("id_reserva"),
-                        rs.getInt("num_habitacion"),
-                        rs.getString("dni_huesped"),  // Agregado dni_huesped
+                        DaoHabitacion.buscarHabitacion(rs.getInt("num_habitacion")),
+                        DaoHuesped.huespedDNI(rs.getString("dni_huesped")),  // Agregado dni_huesped
                         rs.getDate("fecha_checkin"),
                         rs.getDate("fecha_checkout"),
                         rs.getString("estado_pago"),
@@ -50,8 +50,8 @@ public class DaoReserva {
             connection = new ConexionBBDD();
             String consulta = "INSERT INTO reservas (num_habitacion, dni_huesped, fecha_checkin, fecha_checkout, estado_pago, cantidad_personas, precio, extras) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement pstmt = connection.getConnection().prepareStatement(consulta);
-            pstmt.setInt(1, r.getNumHabitacion());
-            pstmt.setString(2, r.getDniHuesped()); // Agregado dniHuesped
+            pstmt.setInt(1, r.getHabitacion().getNumHabitacion());
+            pstmt.setString(2, r.getHuesped().getDni()); // Agregado dniHuesped
             pstmt.setDate(3, new Date(r.getFechaCheckin().getTime()));
             pstmt.setDate(4, new Date(r.getFechaCheckout().getTime()));
             pstmt.setString(5, r.getEstadoPago());
@@ -69,45 +69,14 @@ public class DaoReserva {
         return false;
     }
 
-    public static Reserva buscarReserva(int idReserva) {
-        ConexionBBDD connection;
-        try {
-            connection = new ConexionBBDD();
-            String consulta = "SELECT * FROM reservas WHERE id_reserva = ?";
-            PreparedStatement pstmt = connection.getConnection().prepareStatement(consulta);
-            pstmt.setInt(1, idReserva);
-            ResultSet rs = pstmt.executeQuery();
-
-            if (rs.next()) {
-                Reserva r = new Reserva(
-                        rs.getInt("id_reserva"),
-                        rs.getInt("num_habitacion"),
-                        rs.getString("dni_huesped"), // Agregado dniHuesped
-                        rs.getDate("fecha_checkin"),
-                        rs.getDate("fecha_checkout"),
-                        rs.getString("estado_pago"),
-                        rs.getInt("cantidad_personas"),
-                        rs.getInt("precio"),
-                        rs.getInt("extras")
-                );
-                pstmt.close();
-                return r;
-            }
-            pstmt.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     public static boolean actualizarReserva(Reserva r) {
         ConexionBBDD connection;
         try {
             connection = new ConexionBBDD();
             String sql = "UPDATE reservas SET num_habitacion = ?, dni_huesped = ?, fecha_checkin = ?, fecha_checkout = ?, estado_pago = ?, cantidad_personas = ?, precio = ?, extras = ? WHERE id_reserva = ?";
             PreparedStatement pstmt = connection.getConnection().prepareStatement(sql);
-            pstmt.setInt(1, r.getNumHabitacion());
-            pstmt.setString(2, r.getDniHuesped()); // Agregado dniHuesped
+            pstmt.setInt(1, r.getHabitacion().getNumHabitacion());
+            pstmt.setString(2, r.getHuesped().getDni()); // Agregado dniHuesped
             pstmt.setDate(3, new Date(r.getFechaCheckin().getTime()));
             pstmt.setDate(4, new Date(r.getFechaCheckout().getTime()));
             pstmt.setString(5, r.getEstadoPago());
