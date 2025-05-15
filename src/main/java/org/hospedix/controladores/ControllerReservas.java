@@ -1,6 +1,7 @@
 package org.hospedix.controladores;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -39,8 +40,8 @@ public class ControllerReservas {
 
     private void configurarTabla() {
         colID.setCellValueFactory(new PropertyValueFactory<>("idReserva"));
-        colHabitacion.setCellValueFactory(new PropertyValueFactory<>("numHabitacion"));
-        colCliente.setCellValueFactory(new PropertyValueFactory<>("dniHuesped"));
+        colHabitacion.setCellValueFactory(new PropertyValueFactory<>("habitacion"));
+        colCliente.setCellValueFactory(new PropertyValueFactory<>("huesped"));
         colEstado.setCellValueFactory(new PropertyValueFactory<>("estadoPago"));
         colIN.setCellValueFactory(new PropertyValueFactory<>("fechaCheckin"));
         colOUT.setCellValueFactory(new PropertyValueFactory<>("fechaCheckout"));
@@ -54,7 +55,7 @@ public class ControllerReservas {
             reservaSeleccionada = tablaReservas.getSelectionModel().getSelectedItem();
             if (reservaSeleccionada != null) {
                 txtID.setText(String.valueOf(reservaSeleccionada.getIdReserva()));
-                comboHabitacion.setValue(reservaSeleccionada.getHabitacion());
+                //comboHabitacion.setValue(reservaSeleccionada.getHabitacion());
                 comboCliente.setValue(reservaSeleccionada.getHuesped());
                 fechaIN.setValue(reservaSeleccionada.getFechaCheckin().toLocalDate());
                 fechaOUT.setValue(reservaSeleccionada.getFechaCheckout().toLocalDate());
@@ -65,6 +66,18 @@ public class ControllerReservas {
                 btnEditar.setDisable(false);
                 btnEliminar.setDisable(false);
                 btnAniadir.setDisable(true);
+
+                //Desabilitar Campos
+                comboHabitacion.setDisable(true);
+                fechaIN.setDisable(true);
+                comboCliente.setDisable(true);
+
+                // Cargar comboBox habitacion
+                Habitacion h = DaoHabitacion.buscarHabitacion(reservaSeleccionada.getHabitacion().getNumHabitacion());
+                ObservableList<Habitacion> lista = FXCollections.observableArrayList(h);
+                comboHabitacion.setItems(lista);
+                comboHabitacion.setValue(reservaSeleccionada.getHabitacion());
+
             }
         });
     }
@@ -93,6 +106,7 @@ public class ControllerReservas {
         );
 
         if (DaoReserva.aniadirReserva(r)) {
+            DaoHabitacion.habitacionOcupada(r.getHabitacion().getNumHabitacion());
             mostrarInfo("Reserva añadida correctamente.");
             cargarReservas();
             limpiarCampos();
@@ -134,6 +148,7 @@ public class ControllerReservas {
         if (reservaSeleccionada == null) return;
 
         if (DaoReserva.eliminarReserva(reservaSeleccionada.getIdReserva())) {
+            DaoHabitacion.habitacionDisponible(reservaSeleccionada.getHabitacion().getNumHabitacion());
             mostrarInfo("Reserva eliminada correctamente.");
             cargarReservas();
             limpiarCampos();
@@ -170,6 +185,12 @@ public class ControllerReservas {
         btnEditar.setDisable(true);
         btnEliminar.setDisable(true);
         btnAniadir.setDisable(false);
+        cargarComboBox();
+
+        //Habilitar Campos
+        comboHabitacion.setDisable(false);
+        fechaIN.setDisable(false);
+        comboCliente.setDisable(false);
     }
 
     private boolean validarCampos() {
@@ -273,8 +294,7 @@ public class ControllerReservas {
         limpiarCampos();
     }
 
-    @FXML
-    public void initialize() {
+    void cargarComboBox() {
         comboEstado.setItems(FXCollections.observableArrayList("Pagado", "Pendiente", "Cancelado"));
         comboHabitacion.setItems(FXCollections.observableArrayList(DaoHabitacion.todasHabitacionesDisponibles()));
         comboCliente.setItems(FXCollections.observableArrayList(DaoHuesped.todosHuesped()));
@@ -282,9 +302,14 @@ public class ControllerReservas {
         comboEstado.getSelectionModel().selectFirst();
         comboHabitacion.getSelectionModel().selectFirst();
         comboCliente.getSelectionModel().selectFirst();
+    }
 
+    @FXML
+    public void initialize() {
+        txtID.setDisable(true);
         configurarTabla();
         configurarEventos();
+        cargarComboBox();
         cargarReservas();
     }
 }
