@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hospedix.controladores.ControllerReservas">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../Estilos/estilos.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hospedix.controladores.ControllerReservas">
    <children>
       <GridPane alignment="CENTER_RIGHT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="149.0" prefWidth="900.0">
          <columnConstraints>
@@ -36,7 +36,7 @@
             </Label>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#accionVolver" prefHeight="30.0" prefWidth="82.0" text="Volver">
+                  <Button cancelButton="true" mnemonicParsing="false" onAction="#accionVolver" prefHeight="39.0" prefWidth="120.0" text="Volver">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -79,7 +79,7 @@
                   </HBox>
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.rowIndex="1">
                      <children>
-                        <Label alignment="CENTER" prefHeight="18.0" prefWidth="80.0" text="N º Habitacion" textAlignment="RIGHT" />
+                        <Label alignment="CENTER" prefHeight="18.0" prefWidth="80.0" text="N º Habitación" textAlignment="RIGHT" />
                         <ComboBox fx:id="comboHabitacion" prefWidth="200.0" />
                      </children>
                   </HBox>
@@ -145,7 +145,7 @@
                <columns>
                   <TableColumn fx:id="colID" prefWidth="75.0" text="ID" />
                   <TableColumn fx:id="colCliente" prefWidth="75.0" text="Cliente" />
-                  <TableColumn fx:id="colHabitacion" prefWidth="75.0" text="Nº Habitacion" />
+                  <TableColumn fx:id="colHabitacion" prefWidth="75.0" text="Nº Habitación" />
                   <TableColumn fx:id="colEstado" prefWidth="75.0" text="Estado Pago" />
                   <TableColumn fx:id="colIN" prefWidth="75.0" text="Check IN" />
                   <TableColumn fx:id="colOUT" prefWidth="75.0" text="Check OUT" />

@@ -1,0 +1,140 @@
+
+/* ---------------- TEXTFIELDS ---------------- */
+.text-field {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #b6e7c9;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-padding: 5;
+    -fx-text-fill: #2c3e50;
+}
+
+/* ---------------- COMBOBOXES ---------------- */
+.combo-box {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #b6e7c9;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-padding: 5;
+}
+
+.combo-box .list-cell {
+    -fx-text-fill: #2c3e50;
+}
+
+/* ---------------- BUTTONS GENERALES ---------------- */
+.button {
+    -fx-background-color: #81d4a3;
+    -fx-text-fill: white;
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-padding: 8 16;
+    -fx-border-color: transparent;
+    -fx-border-width: 2px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 2, 0, 0, 1);
+}
+
+.button:hover {
+    -fx-background-color: #66bb8e;
+    -fx-border-color: #000000;
+    -fx-border-width: 2px;
+}
+
+/* ---------------- BOTÓN EDITAR ---------------- */
+#btnEditar {
+    -fx-background-color: #ffd54f;
+    -fx-text-fill: #333333;
+}
+
+#btnEditar:hover {
+    -fx-background-color: #ffca28;
+    -fx-border-color: #000000;
+}
+
+/* ---------------- BOTÓN ELIMINAR ---------------- */
+#btnEliminar {
+    -fx-background-color: #ef9a9a;
+    -fx-text-fill: white;
+}
+
+#btnEliminar:hover {
+    -fx-background-color: #e57373;
+    -fx-border-color: #000000;
+}
+
+/* ---------------- BOTÓN LIMPIAR ---------------- */
+#btnLimpiar {
+    -fx-background-color: #2196f3;
+    -fx-text-fill: white;
+}
+
+#btnLimpiar:hover {
+    -fx-background-color: #1976d2;
+    -fx-border-color: #000000;
+}
+
+/* ---------------- BOTÓN VOLVER ---------------- */
+#btnVolver {
+    -fx-background-color: #aed581;
+    -fx-text-fill: white;
+    -fx-font-size: 10pt;
+    -fx-padding: 4 10;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+}
+
+#btnVolver:hover {
+    -fx-background-color: #9ccc65;
+    -fx-font-size: 12pt;
+    -fx-padding: 8 16;
+    -fx-border-color: #000000;
+    -fx-border-width: 2px;
+}
+
+/* ---------------- TABLE VIEW ---------------- */
+.table-view {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #b6e7c9;
+    -fx-table-cell-border-color: #e0f5e8;
+    -fx-control-inner-background: #ffffff;
+    -fx-selection-bar: #c5f3d6;
+    -fx-selection-bar-non-focused: #d0f5de;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #b6e7c9;
+}
+
+.table-view .column-header, .table-view .filler {
+    -fx-size: 32px;
+    -fx-border-color: transparent;
+}
+
+.table-view .label {
+    -fx-font-weight: bold;
+    -fx-text-fill: #2e7d32;
+}
+
+.table-row-cell {
+    -fx-background-color: transparent;
+}
+
+.table-row-cell:filled:selected {
+    -fx-background-color: #c5f3d6;
+}
+
+/* ---------------- DATEPICKER ---------------- */
+.date-picker {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #b6e7c9;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-padding: 5;
+}
+
+.date-picker .text-field {
+    -fx-text-fill: #2c3e50;
+}
