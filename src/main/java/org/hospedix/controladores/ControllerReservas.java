@@ -37,21 +37,6 @@ public class ControllerReservas {
 
     private Reserva reservaSeleccionada = null;
 
-    @FXML
-    public void initialize() {
-        comboEstado.setItems(FXCollections.observableArrayList("Pagado", "Pendiente", "Cancelado"));
-        comboHabitacion.setItems(FXCollections.observableArrayList(DaoHabitacion.todasHabitaciones()));
-        comboCliente.setItems(FXCollections.observableArrayList(DaoHuesped.todosHuesped()));
-
-        comboEstado.getSelectionModel().selectFirst();
-        comboHabitacion.getSelectionModel().selectFirst();
-        comboCliente.getSelectionModel().selectFirst();
-
-        configurarTabla();
-        configurarEventos();
-        cargarReservas();
-    }
-
     private void configurarTabla() {
         colID.setCellValueFactory(new PropertyValueFactory<>("idReserva"));
         colHabitacion.setCellValueFactory(new PropertyValueFactory<>("numHabitacion"));
@@ -258,13 +243,29 @@ public class ControllerReservas {
     }
 
 
-    private void mostrarError(String msg) {
-        Alert alert = new Alert(Alert.AlertType.ERROR, msg, ButtonType.OK);
+    /**
+     * Muestra un mensaje de error en una alerta.
+     *
+     * @param error el mensaje de error a mostrar.
+     */
+    void mostrarError(String error) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText(null);
+        alert.setTitle("Error");
+        alert.setContentText(error);
         alert.showAndWait();
     }
 
-    private void mostrarInfo(String msg) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION, msg, ButtonType.OK);
+    /**
+     * Muestra un mensaje informativo en una alerta.
+     *
+     * @param info mensaje de información a mostrar.
+     */
+    void mostrarInfo(String info) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(null);
+        alert.setTitle("Informacion");
+        alert.setContentText(info);
         alert.showAndWait();
     }
 
@@ -272,4 +273,18 @@ public class ControllerReservas {
         limpiarCampos();
     }
 
+    @FXML
+    public void initialize() {
+        comboEstado.setItems(FXCollections.observableArrayList("Pagado", "Pendiente", "Cancelado"));
+        comboHabitacion.setItems(FXCollections.observableArrayList(DaoHabitacion.todasHabitacionesDisponibles()));
+        comboCliente.setItems(FXCollections.observableArrayList(DaoHuesped.todosHuesped()));
+
+        comboEstado.getSelectionModel().selectFirst();
+        comboHabitacion.getSelectionModel().selectFirst();
+        comboCliente.getSelectionModel().selectFirst();
+
+        configurarTabla();
+        configurarEventos();
+        cargarReservas();
+    }
 }

@@ -183,19 +183,29 @@ public class ControllerHabitaciones {
         return true;
     }
 
-    private void mostrarError(String mensaje) {
+    /**
+     * Muestra un mensaje de error en una alerta.
+     *
+     * @param error el mensaje de error a mostrar.
+     */
+    void mostrarError(String error) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
         alert.setHeaderText(null);
-        alert.setContentText(mensaje);
+        alert.setTitle("Error");
+        alert.setContentText(error);
         alert.showAndWait();
     }
 
-    private void mostrarInfo(String mensaje) {
+    /**
+     * Muestra un mensaje informativo en una alerta.
+     *
+     * @param info mensaje de información a mostrar.
+     */
+    void mostrarInfo(String info) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Información");
         alert.setHeaderText(null);
-        alert.setContentText(mensaje);
+        alert.setTitle("Informacion");
+        alert.setContentText(info);
         alert.showAndWait();
     }
 

@@ -36,6 +36,32 @@ public class DaoHabitacion {
         return lista;
     }
 
+    public static ObservableList<Habitacion> todasHabitacionesDisponibles() {
+        ObservableList<Habitacion> lista = FXCollections.observableArrayList();
+        ConexionBBDD connection;
+        String consulta = "SELECT num_habitacion, estado, tipo, precio FROM habitaciones WHERE estado = 'Disponible'";
+
+        try {
+            connection = new ConexionBBDD();
+            PreparedStatement pstmt = connection.getConnection().prepareStatement(consulta);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                int num = rs.getInt("num_habitacion");
+                String estado = rs.getString("estado");
+                String tipo = rs.getString("tipo");
+                double precio = rs.getDouble("precio");
+
+                Habitacion h = new Habitacion(num, estado, tipo, precio);
+                lista.add(h);
+            }
+            pstmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
+
     public static boolean aniadirHabitacion(Habitacion h) {
         ConexionBBDD connection;
         try {
