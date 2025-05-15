@@ -1,5 +1,6 @@
 package org.hospedix.controladores;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,11 +10,13 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.Node;
 import javafx.stage.Stage;
+import org.hospedix.bbdd.ConexionBBDD;
 import org.hospedix.dao.DaoEmpleado;
 import org.hospedix.modelos.Empleado;
 import org.hospedix.sesion.Sesion;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class ControllerInicio {
 
@@ -60,5 +63,17 @@ public class ControllerInicio {
         alert.setTitle("Error");
         alert.setContentText(error);
         alert.showAndWait();
+    }
+
+    @FXML
+    void initialize() {
+        // Controlar acceso a la base de datos
+        try {
+            new ConexionBBDD();
+        } catch (SQLException e) {
+            mostrarError("Conexion Erronea a la Base de Datos");
+            Platform.exit(); // Cierra la aplicación
+            return;
+        }
     }
 }
