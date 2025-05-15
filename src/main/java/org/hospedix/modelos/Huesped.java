@@ -61,4 +61,10 @@ public class Huesped {
     public int hashCode() {
         return Objects.hash(dni);
     }
+
+    @Override
+    public String toString() {
+        return dni + " - " + nombre + " " + apellido;
+    }
+
 }
