@@ -13,6 +13,7 @@ import org.hospedix.dao.DaoHabitacion;
 import org.hospedix.modelos.Habitacion;
 
 import java.io.IOException;
+import java.util.Optional;
 
 public class ControllerHabitaciones {
 
@@ -125,22 +126,65 @@ public class ControllerHabitaciones {
     }
 
     @FXML
-    void accionEliminar(javafx.event.ActionEvent event) {
+    void accionEliminar(ActionEvent event) {
         if (habitacionSeleccionada == null) {
             mostrarError("Seleccione una habitación para eliminar.");
             return;
         }
 
-        boolean eliminado = DaoHabitacion.eliminarHabitacion(habitacionSeleccionada.getNumHabitacion());
-        if (eliminado) {
-            mostrarInfo("Habitación eliminada correctamente.");
-            limpiarCampos();
-            cargarHabitaciones();
-            estadoInicialBotones();
+        int numHabitacion = habitacionSeleccionada.getNumHabitacion();
+        boolean tieneReservas = DaoHabitacion.habitacionTieneReservas(numHabitacion);
+        boolean tieneIncidencias = DaoHabitacion.habitacionTieneIncidencias(numHabitacion);
+
+        if (tieneReservas || tieneIncidencias) {
+            String mensaje = "La habitación está vinculada a:\n";
+            if (tieneReservas) mensaje += "- Reservas\n";
+            if (tieneIncidencias) mensaje += "- Incidencias\n";
+            mensaje += "\nSi continúas, se eliminarán todos estos registros.\n¿Deseas continuar?";
+
+            Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
+            alerta.setTitle("Confirmación de eliminación");
+            alerta.setHeaderText("Esta habitación tiene registros asociados");
+            alerta.setContentText(mensaje);
+
+            ButtonType btnSi = new ButtonType("Sí", ButtonBar.ButtonData.YES);
+            ButtonType btnNo = new ButtonType("No", ButtonBar.ButtonData.NO);
+            alerta.getButtonTypes().setAll(btnSi, btnNo);
+
+            alerta.showAndWait().ifPresent(respuesta -> {
+                if (respuesta == btnSi) {
+                    if (DaoHabitacion.eliminarHabitacionYAsociados(numHabitacion)) {
+                        mostrarInfo("Habitación y registros asociados eliminados correctamente.");
+                        limpiarCampos();
+                        cargarHabitaciones();
+                        estadoInicialBotones();
+                    } else {
+                        mostrarError("No se pudo eliminar la habitación.");
+                    }
+                }
+            });
         } else {
-            mostrarError("Error al eliminar la habitación.");
+            // Eliminación simple si no tiene vínculos
+            Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+            confirm.setTitle("Eliminar habitación");
+            confirm.setHeaderText("¿Estás seguro?");
+            confirm.setContentText("Esta acción no se puede deshacer.");
+
+            Optional<ButtonType> result = confirm.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                if (DaoHabitacion.eliminarHabitacion(numHabitacion)) {
+                    mostrarInfo("Habitación eliminada correctamente.");
+                    limpiarCampos();
+                    cargarHabitaciones();
+                    estadoInicialBotones();
+                } else {
+                    mostrarError("No se pudo eliminar la habitación.");
+                }
+            }
         }
     }
+
+
 
     @FXML
     void accionLimpiar(ActionEvent event) {
