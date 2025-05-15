@@ -116,21 +116,35 @@ public class ControllerIncidencias {
 
     @FXML
     void accionEliminar(ActionEvent event) {
-        Incidencia i=tablaIncidencias.getSelectionModel().getSelectedItem();
-        if (i!=null){
-            Boolean estado = DaoIncidencia.eliminarIncidencia(i.getIdIncidencia());
-            if (estado) {
-                mostrarInfo("Incidencia eliminada correctamente");
-                limpiarCampos();
-                cargarIncidencias();
-                estadoInicialBotones();
-            } else {
-                mostrarError("Error al eliminar la Incidencia");
-            }
-        }else {
-            mostrarError("Selecciona una Incidencia");
+        Incidencia i = tablaIncidencias.getSelectionModel().getSelectedItem();
+        if (i != null) {
+            Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
+            alerta.setTitle("Confirmar eliminación");
+            alerta.setHeaderText("¿Estás seguro de que deseas eliminar esta incidencia?");
+            alerta.setContentText("Esta acción no se puede deshacer.");
+
+            ButtonType botonSi = new ButtonType("Sí", ButtonBar.ButtonData.YES);
+            ButtonType botonNo = new ButtonType("No", ButtonBar.ButtonData.NO);
+            alerta.getButtonTypes().setAll(botonSi, botonNo);
+
+            alerta.showAndWait().ifPresent(respuesta -> {
+                if (respuesta == botonSi) {
+                    Boolean estado = DaoIncidencia.eliminarIncidencia(i.getIdIncidencia());
+                    if (estado) {
+                        mostrarInfo("Incidencia eliminada correctamente.");
+                        limpiarCampos();
+                        cargarIncidencias();
+                        estadoInicialBotones();
+                    } else {
+                        mostrarError("Error al eliminar la incidencia.");
+                    }
+                }
+            });
+        } else {
+            mostrarError("Selecciona una incidencia.");
         }
     }
+
 
     @FXML
     void accionLimpiar(ActionEvent event) {
