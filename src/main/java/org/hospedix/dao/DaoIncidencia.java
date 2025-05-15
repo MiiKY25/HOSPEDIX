@@ -87,5 +87,23 @@ public class DaoIncidencia {
     }
 
 
+    public static boolean eliminarIncidencia(int id) {
+        ConexionBBDD connection;
+        try {
+            connection = new ConexionBBDD();
+            String sql = "DELETE FROM incidencias WHERE id_incidencia = ?";
+            PreparedStatement pstmt = connection.getConnection().prepareStatement(sql);
+            pstmt.setInt(1, id);
+            int filas = pstmt.executeUpdate();
+            pstmt.close();
+            connection.CloseConexion();
+            return filas > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
 
 }

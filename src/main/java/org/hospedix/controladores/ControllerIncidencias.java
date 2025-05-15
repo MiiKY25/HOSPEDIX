@@ -10,7 +10,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import org.hospedix.dao.DaoEmpleado;
 import org.hospedix.dao.DaoHabitacion;
 import org.hospedix.dao.DaoIncidencia;
 import org.hospedix.modelos.Habitacion;
@@ -117,7 +116,20 @@ public class ControllerIncidencias {
 
     @FXML
     void accionEliminar(ActionEvent event) {
-
+        Incidencia i=tablaIncidencias.getSelectionModel().getSelectedItem();
+        if (i!=null){
+            Boolean estado = DaoIncidencia.eliminarIncidencia(i.getIdIncidencia());
+            if (estado) {
+                mostrarInfo("Incidencia eliminada correctamente");
+                limpiarCampos();
+                cargarIncidencias();
+                estadoInicialBotones();
+            } else {
+                mostrarError("Error al eliminar la Incidencia");
+            }
+        }else {
+            mostrarError("Selecciona una Incidencia");
+        }
     }
 
     @FXML

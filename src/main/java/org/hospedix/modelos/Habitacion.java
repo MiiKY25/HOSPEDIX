@@ -61,4 +61,10 @@ public class Habitacion {
     public int hashCode() {
         return Objects.hash(numHabitacion);
     }
+
+    @Override
+    public String toString() {
+        return "Habitación N°" + numHabitacion + " - " + tipo;
+    }
+
 }
