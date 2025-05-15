@@ -125,21 +125,35 @@ public class ControllerEmpleados {
 
     @FXML
     void accionEliminar(ActionEvent event) {
-        Empleado e=tablaEmpleados.getSelectionModel().getSelectedItem();
-        if (e!=null){
-                Boolean estado = DaoEmpleado.eliminarEmpleado(e.getDni());
-                if (estado) {
-                    mostrarInfo("Empleado eliminado correctamente");
-                    limpiarCampos();
-                    cargarEmpleados();
-                    estadoInicialBotones();
-                } else {
-                    mostrarError("Error al eliminar el Empleado");
+        Empleado e = tablaEmpleados.getSelectionModel().getSelectedItem();
+        if (e != null) {
+            Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
+            alerta.setTitle("Confirmar eliminación");
+            alerta.setHeaderText("¿Estás seguro de que deseas eliminar este empleado?");
+            alerta.setContentText("Esta acción no se puede deshacer.");
+
+            ButtonType botonSi = new ButtonType("Sí", ButtonBar.ButtonData.YES);
+            ButtonType botonNo = new ButtonType("No", ButtonBar.ButtonData.NO);
+            alerta.getButtonTypes().setAll(botonSi, botonNo);
+
+            alerta.showAndWait().ifPresent(respuesta -> {
+                if (respuesta == botonSi) {
+                    Boolean estado = DaoEmpleado.eliminarEmpleado(e.getDni());
+                    if (estado) {
+                        mostrarInfo("Empleado eliminado correctamente.");
+                        limpiarCampos();
+                        cargarEmpleados();
+                        estadoInicialBotones();
+                    } else {
+                        mostrarError("Error al eliminar el empleado.");
+                    }
                 }
-        }else {
-            mostrarError("Selecciona un Empleado");
+            });
+        } else {
+            mostrarError("Selecciona un empleado.");
         }
     }
+
 
     @FXML
     void accionLimpiar(ActionEvent event) {

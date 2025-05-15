@@ -145,17 +145,34 @@ public class ControllerReservas {
 
     @FXML
     private void accionEliminar() {
-        if (reservaSeleccionada == null) return;
-
-        if (DaoReserva.eliminarReserva(reservaSeleccionada.getIdReserva())) {
-            DaoHabitacion.habitacionDisponible(reservaSeleccionada.getHabitacion().getNumHabitacion());
-            mostrarInfo("Reserva eliminada correctamente.");
-            cargarReservas();
-            limpiarCampos();
-        } else {
-            mostrarError("Error al eliminar reserva.");
+        if (reservaSeleccionada == null) {
+            mostrarError("Selecciona una reserva para eliminar.");
+            return;
         }
+
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Confirmar eliminación");
+        confirm.setHeaderText("¿Estás seguro de que deseas eliminar esta reserva?");
+        confirm.setContentText("Esta acción no se puede deshacer.");
+
+        ButtonType btnSi = new ButtonType("Sí", ButtonBar.ButtonData.YES);
+        ButtonType btnNo = new ButtonType("No", ButtonBar.ButtonData.NO);
+        confirm.getButtonTypes().setAll(btnSi, btnNo);
+
+        confirm.showAndWait().ifPresent(respuesta -> {
+            if (respuesta == btnSi) {
+                if (DaoReserva.eliminarReserva(reservaSeleccionada.getIdReserva())) {
+                    DaoHabitacion.habitacionDisponible(reservaSeleccionada.getHabitacion().getNumHabitacion());
+                    mostrarInfo("Reserva eliminada correctamente.");
+                    cargarReservas();
+                    limpiarCampos();
+                } else {
+                    mostrarError("Error al eliminar reserva.");
+                }
+            }
+        });
     }
+
 
     @FXML
     private void accionVolver(javafx.event.ActionEvent event) {
