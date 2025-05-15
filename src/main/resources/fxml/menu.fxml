@@ -11,8 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="435.0" prefWidth="905.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hospedix.controladores.ControllerMenu">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="435.0" prefWidth="905.0" stylesheets="@../Estilos/estilos.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hospedix.controladores.ControllerMenu">
    <children>
       <GridPane prefHeight="187.0" prefWidth="900.0">
         <columnConstraints>
@@ -26,7 +25,7 @@
          <children>
             <HBox alignment="CENTER" prefHeight="190.0" prefWidth="489.0" spacing="20.0" GridPane.columnIndex="1">
                <children>
-                  <Label text="BIENVENIDO">
+                  <Label text="BIENVENID@">
                      <font>
                         <Font name="System Bold" size="36.0" />
                      </font>
@@ -49,7 +48,7 @@
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#accionVolver" prefHeight="65.0" prefWidth="110.0" text="VOLVER" />
+                  <Button mnemonicParsing="false" onAction="#accionVolver" prefHeight="65.0" prefWidth="120.0" text="CERRAR SESION" />
                </children>
             </VBox>
          </children>
