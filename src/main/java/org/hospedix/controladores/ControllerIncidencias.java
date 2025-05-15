@@ -169,9 +169,10 @@ public class ControllerIncidencias {
                 comboHabitacion.getSelectionModel().clearSelection();
                 comboHabitacion.getSelectionModel().select(incidenciaSeleccionado.getHabitacion());
 
-                //FALTA FECHA
+                fecha.setValue(incidenciaSeleccionado.getFechaReporte());
 
-
+                //Desabilitar Campos
+                comboHabitacion.setDisable(true);
                 btnEditar.setDisable(false);
                 btnEliminar.setDisable(false);
                 btnAniadir.setDisable(true);
@@ -226,6 +227,7 @@ public class ControllerIncidencias {
         btnAniadir.setDisable(false);
         btnEliminar.setDisable(true);
         btnEditar.setDisable(true);
+        comboHabitacion.setDisable(false);
     }
 
     /**
