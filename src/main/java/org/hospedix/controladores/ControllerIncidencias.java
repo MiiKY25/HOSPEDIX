@@ -19,64 +19,92 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Controlador para gestionar la interfaz y lógica de incidencias en el sistema Hospedix.
+ * Permite añadir, editar, eliminar, limpiar formularios y volver al menú principal.
+ * Gestiona una tabla con incidencias y campos para su manipulación.
+ */
 public class ControllerIncidencias {
 
+    /** Botón para añadir una nueva incidencia */
     @FXML
     private Button btnAniadir;
 
+    /** Botón para editar una incidencia seleccionada */
     @FXML
     private Button btnEditar;
 
+    /** Botón para eliminar una incidencia seleccionada */
     @FXML
     private Button btnEliminar;
 
+    /** Columna de la tabla que muestra la descripción de la incidencia */
     @FXML
     private TableColumn<Incidencia, String> colDescripcion;
 
+    /** Columna de la tabla que muestra el estado de la incidencia */
     @FXML
     private TableColumn<Incidencia, String> colEstado;
 
+    /** Columna de la tabla que muestra la fecha de reporte de la incidencia */
     @FXML
     private TableColumn<Incidencia, LocalDate> colFecha;
 
+    /** Columna de la tabla que muestra la habitación asociada a la incidencia */
     @FXML
     private TableColumn<Incidencia, Habitacion> colHabitacion;
 
+    /** Columna de la tabla que muestra el ID de la incidencia */
     @FXML
     private TableColumn<Incidencia, Integer> colID;
 
+    /** Columna de la tabla que muestra el tipo de incidencia */
     @FXML
     private TableColumn<Incidencia, String> colTipo;
 
+    /** ComboBox para seleccionar el estado de la incidencia */
     @FXML
     private ComboBox<String> comboEstado;
 
+    /** ComboBox para seleccionar la habitación asociada a la incidencia */
     @FXML
     private ComboBox<Habitacion> comboHabitacion;
 
+    /** ComboBox para seleccionar el tipo de incidencia */
     @FXML
     private ComboBox<String> comboTipo;
 
+    /** Selector de fecha para indicar la fecha de reporte de la incidencia */
     @FXML
     private DatePicker fecha;
 
+    /** Tabla que muestra la lista de incidencias */
     @FXML
     private TableView<Incidencia> tablaIncidencias;
 
+    /** Área de texto para ingresar la descripción de la incidencia */
     @FXML
     private TextArea txtDescripcion;
 
+    /** Campo de texto que muestra el ID de la incidencia (no editable) */
     @FXML
     private TextField txtID;
 
+    /** Incidencia actualmente seleccionada en la tabla */
     private Incidencia incidenciaSeleccionado = null;
 
+    /**
+     * Acción para añadir una nueva incidencia.
+     * Valida los datos, crea una nueva incidencia y actualiza la tabla.
+     *
+     * @param event evento de acción del botón añadir.
+     */
     @FXML
     void accionAniadir(ActionEvent event) {
-        String error=validarDatos();
-        if (error.isEmpty()){
-            //Crear Incidencia
-            Incidencia i=new Incidencia(0,comboTipo.getValue(),txtDescripcion.getText(),null,comboHabitacion.getValue(),comboEstado.getValue());
+        String error = validarDatos();
+        if (error.isEmpty()) {
+            // Crear Incidencia con ID 0 temporalmente
+            Incidencia i = new Incidencia(0, comboTipo.getValue(), txtDescripcion.getText(), null, comboHabitacion.getValue(), comboEstado.getValue());
             Boolean estado = DaoIncidencia.aniadirIncidencia(i);
             if (estado) {
                 DaoHabitacion.habitacionMantenimiento(i.getHabitacion().getNumHabitacion());
@@ -86,18 +114,24 @@ public class ControllerIncidencias {
             } else {
                 mostrarError("Error al crear la Incidencia");
             }
-        }else {
+        } else {
             mostrarError(error);
         }
     }
 
+    /**
+     * Acción para editar una incidencia seleccionada.
+     * Valida los datos, actualiza la incidencia en la base de datos y refresca la tabla.
+     *
+     * @param event evento de acción del botón editar.
+     */
     @FXML
     void accionEditar(ActionEvent event) {
-        Incidencia i=tablaIncidencias.getSelectionModel().getSelectedItem();
-        if (i!=null){
-            String error=validarDatos();
-            if (error.isEmpty()){
-                Incidencia IncidenciaNueva=new Incidencia(Integer.parseInt(txtID.getText()),comboTipo.getValue(),txtDescripcion.getText(),fecha.getValue(),comboHabitacion.getValue(),comboEstado.getValue());
+        Incidencia i = tablaIncidencias.getSelectionModel().getSelectedItem();
+        if (i != null) {
+            String error = validarDatos();
+            if (error.isEmpty()) {
+                Incidencia IncidenciaNueva = new Incidencia(Integer.parseInt(txtID.getText()), comboTipo.getValue(), txtDescripcion.getText(), fecha.getValue(), comboHabitacion.getValue(), comboEstado.getValue());
                 Boolean estado = DaoIncidencia.actualizarIncidencia(IncidenciaNueva);
                 if (estado) {
                     mostrarInfo("Incidencia editada correctamente");
@@ -107,14 +141,20 @@ public class ControllerIncidencias {
                 } else {
                     mostrarError("Error al editar la Incidencia");
                 }
-            }else{
+            } else {
                 mostrarError(error);
             }
-        }else {
+        } else {
             mostrarError("Selecciona una Incidencia");
         }
     }
 
+    /**
+     * Acción para eliminar una incidencia seleccionada.
+     * Solicita confirmación antes de eliminar y actualiza la tabla.
+     *
+     * @param event evento de acción del botón eliminar.
+     */
     @FXML
     void accionEliminar(ActionEvent event) {
         Incidencia i = tablaIncidencias.getSelectionModel().getSelectedItem();
@@ -146,12 +186,21 @@ public class ControllerIncidencias {
         }
     }
 
-
+    /**
+     * Acción para limpiar los campos del formulario.
+     *
+     * @param event evento de acción del botón limpiar.
+     */
     @FXML
     void accionLimpiar(ActionEvent event) {
         limpiarCampos();
     }
 
+    /**
+     * Acción para volver al menú principal.
+     *
+     * @param event evento de acción del botón volver.
+     */
     @FXML
     void accionVolver(ActionEvent event) {
         try {
@@ -166,6 +215,10 @@ public class ControllerIncidencias {
         }
     }
 
+    /**
+     * Configura el evento click en la tabla para cargar la incidencia seleccionada
+     * en los campos del formulario y ajustar los botones y controles correspondientes.
+     */
     private void configurarEventosTabla() {
         tablaIncidencias.setOnMouseClicked(event -> {
             incidenciaSeleccionado = tablaIncidencias.getSelectionModel().getSelectedItem();
@@ -185,7 +238,7 @@ public class ControllerIncidencias {
 
                 fecha.setValue(incidenciaSeleccionado.getFechaReporte());
 
-                //Desabilitar Campos
+                // Deshabilitar selección de habitación durante edición
                 comboHabitacion.setDisable(true);
                 btnEditar.setDisable(false);
                 btnEliminar.setDisable(false);
@@ -194,11 +247,19 @@ public class ControllerIncidencias {
         });
     }
 
+    /**
+     * Valida los datos ingresados en el formulario para una incidencia.
+     *
+     * @return un String con los mensajes de error si existen, o cadena vacía si todoo es válido.
+     */
     public String validarDatos() {
         String error = "";
 
-        if (txtDescripcion.getText().trim().isEmpty()) {
-            error += "El campo 'Descripcion' no puede estar vacío.\n";
+        String descripcion = txtDescripcion.getText().trim();
+        if (descripcion.isEmpty()) {
+            error += "El campo 'Descripción' no puede estar vacío.\n";
+        } else if (descripcion.length() > 100) {
+            error += "El campo 'Descripción' no puede tener más de 100 caracteres.\n";
         }
 
         Habitacion habitacion = comboHabitacion.getValue();
@@ -219,18 +280,27 @@ public class ControllerIncidencias {
         return error;
     }
 
+    /**
+     * Establece el estado inicial de los botones: deshabilita editar y eliminar, habilita añadir.
+     */
     private void estadoInicialBotones() {
         btnEditar.setDisable(true);
         btnEliminar.setDisable(true);
         btnAniadir.setDisable(false);
     }
 
+    /**
+     * Carga todas las incidencias desde la base de datos y las muestra en la tabla.
+     */
     void cargarIncidencias() {
         ObservableList<Incidencia> listaIncidencias = DaoIncidencia.todasIncidencias();
         tablaIncidencias.setItems(listaIncidencias);
         tablaIncidencias.refresh();
     }
 
+    /**
+     * Limpia todos los campos del formulario y restablece el estado de los botones y controles.
+     */
     private void limpiarCampos() {
         txtID.setText("");
         txtDescripcion.setText("");
@@ -245,7 +315,7 @@ public class ControllerIncidencias {
     }
 
     /**
-     * Muestra un mensaje de error en una alerta.
+     * Muestra un mensaje de error en una ventana de alerta.
      *
      * @param error el mensaje de error a mostrar.
      */
@@ -258,18 +328,22 @@ public class ControllerIncidencias {
     }
 
     /**
-     * Muestra un mensaje informativo en una alerta.
+     * Muestra un mensaje informativo en una ventana de alerta.
      *
      * @param info mensaje de información a mostrar.
      */
     void mostrarInfo(String info) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(null);
-        alert.setTitle("Informacion");
+        alert.setTitle("Información");
         alert.setContentText(info);
         alert.showAndWait();
     }
 
+    /**
+     * Metodo llamado automáticamente después de cargar el FXML.
+     * Configura las columnas de la tabla, carga los datos iniciales y establece eventos.
+     */
     @FXML
     private void initialize() {
         colID.setCellValueFactory(new PropertyValueFactory<>("idIncidencia"));
@@ -278,10 +352,8 @@ public class ControllerIncidencias {
         colEstado.setCellValueFactory(new PropertyValueFactory<>("estado"));
         colDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
 
-        // Configurar la columna de fecha de préstamo
+        // Configurar la columna de fecha con formato personalizado
         colFecha.setCellValueFactory(new PropertyValueFactory<>("fechaReporte"));
-
-        // Aplicar un formato de fecha
         colFecha.setCellFactory(column -> new TableCell<Incidencia, LocalDate>() {
             private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -291,9 +363,7 @@ public class ControllerIncidencias {
                 if (empty || item == null) {
                     setText(null);
                 } else {
-                    // Formatear la fecha
-                    String formattedDate = item.format(formatter);
-                    setText(formattedDate);
+                    setText(item.format(formatter));
                 }
             }
         });
@@ -304,7 +374,6 @@ public class ControllerIncidencias {
         ObservableList<Habitacion> listaHabitaciones = DaoHabitacion.todasHabitaciones();
         comboHabitacion.getItems().addAll(listaHabitaciones);
 
-        //Seleccionar primera opcion
         comboEstado.getSelectionModel().selectFirst();
         comboTipo.getSelectionModel().selectFirst();
         comboHabitacion.getSelectionModel().selectFirst();
@@ -313,5 +382,4 @@ public class ControllerIncidencias {
         cargarIncidencias();
         estadoInicialBotones();
     }
-
 }
