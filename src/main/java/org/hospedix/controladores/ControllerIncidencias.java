@@ -197,8 +197,11 @@ public class ControllerIncidencias {
     public String validarDatos() {
         String error = "";
 
-        if (txtDescripcion.getText().trim().isEmpty()) {
-            error += "El campo 'Descripcion' no puede estar vacío.\n";
+        String descripcion = txtDescripcion.getText().trim();
+        if (descripcion.isEmpty()) {
+            error += "El campo 'Descripción' no puede estar vacío.\n";
+        } else if (descripcion.length() > 100) {
+            error += "El campo 'Descripción' no puede tener más de 200 caracteres.\n";
         }
 
         Habitacion habitacion = comboHabitacion.getValue();
