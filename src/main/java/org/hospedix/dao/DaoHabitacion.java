@@ -11,6 +11,11 @@ import java.sql.SQLException;
 
 public class DaoHabitacion {
 
+    /**
+     * Obtiene una lista con todas las habitaciones de la base de datos.
+     *
+     * @return ObservableList de Habitacion con todas las habitaciones.
+     */
     public static ObservableList<Habitacion> todasHabitaciones() {
         ObservableList<Habitacion> lista = FXCollections.observableArrayList();
         ConexionBBDD connection;
@@ -36,6 +41,11 @@ public class DaoHabitacion {
         return lista;
     }
 
+    /**
+     * Obtiene una lista con todas las habitaciones que están disponibles.
+     *
+     * @return ObservableList de Habitacion con las habitaciones disponibles.
+     */
     public static ObservableList<Habitacion> todasHabitacionesDisponibles() {
         ObservableList<Habitacion> lista = FXCollections.observableArrayList();
         ConexionBBDD connection;
@@ -62,6 +72,12 @@ public class DaoHabitacion {
         return lista;
     }
 
+    /**
+     * Añade una nueva habitación a la base de datos.
+     *
+     * @param h Objeto Habitacion con los datos a insertar.
+     * @return true si la inserción fue exitosa, false en caso contrario.
+     */
     public static boolean aniadirHabitacion(Habitacion h) {
         ConexionBBDD connection;
         try {
@@ -82,6 +98,12 @@ public class DaoHabitacion {
         return false;
     }
 
+    /**
+     * Busca y devuelve una habitación según su número.
+     *
+     * @param num Número de la habitación a buscar.
+     * @return Objeto Habitacion si se encuentra, null si no existe o en caso de error.
+     */
     public static Habitacion buscarHabitacion(int num) {
         ConexionBBDD connection;
         try {
@@ -105,6 +127,12 @@ public class DaoHabitacion {
         return null;
     }
 
+    /**
+     * Actualiza los datos de una habitación existente.
+     *
+     * @param h Objeto Habitacion con los datos actualizados.
+     * @return true si la actualización fue exitosa, false en caso contrario.
+     */
     public static boolean actualizarHabitacion(Habitacion h) {
         ConexionBBDD connection;
         try {
@@ -125,6 +153,12 @@ public class DaoHabitacion {
         return false;
     }
 
+    /**
+     * Marca una habitación como 'Ocupada'.
+     *
+     * @param id Número de la habitación a actualizar.
+     * @return true si la actualización fue exitosa, false en caso contrario.
+     */
     public static boolean habitacionOcupada(int id) {
         ConexionBBDD connection;
         try {
@@ -142,6 +176,12 @@ public class DaoHabitacion {
         return false;
     }
 
+    /**
+     * Marca una habitación como 'Disponible'.
+     *
+     * @param id Número de la habitación a actualizar.
+     * @return true si la actualización fue exitosa, false en caso contrario.
+     */
     public static boolean habitacionDisponible(int id) {
         ConexionBBDD connection;
         try {
@@ -159,6 +199,12 @@ public class DaoHabitacion {
         return false;
     }
 
+    /**
+     * Marca una habitación como 'Mantenimiento'.
+     *
+     * @param id Número de la habitación a actualizar.
+     * @return true si la actualización fue exitosa, false en caso contrario.
+     */
     public static boolean habitacionMantenimiento(int id) {
         ConexionBBDD connection;
         try {
@@ -176,6 +222,12 @@ public class DaoHabitacion {
         return false;
     }
 
+    /**
+     * Elimina una habitación según su número.
+     *
+     * @param numero Número de la habitación a eliminar.
+     * @return true si la eliminación fue exitosa, false en caso contrario.
+     */
     public static boolean eliminarHabitacion(int numero) {
         ConexionBBDD connection;
         try {
@@ -193,6 +245,12 @@ public class DaoHabitacion {
         return false;
     }
 
+    /**
+     * Comprueba si una habitación tiene reservas asociadas.
+     *
+     * @param numHabitacion Número de la habitación a comprobar.
+     * @return true si tiene reservas, false si no tiene o en caso de error.
+     */
     public static boolean habitacionTieneReservas(int numHabitacion) {
         ConexionBBDD connection;
         boolean tiene = false;
@@ -213,6 +271,12 @@ public class DaoHabitacion {
         return tiene;
     }
 
+    /**
+     * Comprueba si una habitación tiene incidencias asociadas.
+     *
+     * @param numHabitacion Número de la habitación a comprobar.
+     * @return true si tiene incidencias, false si no tiene o en caso de error.
+     */
     public static boolean habitacionTieneIncidencias(int numHabitacion) {
         ConexionBBDD connection;
         boolean tiene = false;
@@ -233,6 +297,13 @@ public class DaoHabitacion {
         return tiene;
     }
 
+    /**
+     * Elimina una habitación y todos sus registros asociados en incidencias y reservas.
+     * Se ejecuta en una transacción para asegurar la integridad.
+     *
+     * @param numHabitacion Número de la habitación a eliminar.
+     * @return true si la eliminación fue exitosa, false en caso contrario.
+     */
     public static boolean eliminarHabitacionYAsociados(int numHabitacion) {
         ConexionBBDD connection;
         try {
@@ -270,6 +341,5 @@ public class DaoHabitacion {
             return false;
         }
     }
-
 
 }

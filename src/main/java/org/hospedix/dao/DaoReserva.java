@@ -12,6 +12,11 @@ import java.sql.SQLException;
 
 public class DaoReserva {
 
+    /**
+     * Obtiene todas las reservas almacenadas en la base de datos.
+     *
+     * @return ObservableList con todas las reservas.
+     */
     public static ObservableList<Reserva> todasReservas() {
         ObservableList<Reserva> lista = FXCollections.observableArrayList();
         ConexionBBDD connection;
@@ -26,7 +31,7 @@ public class DaoReserva {
                 Reserva r = new Reserva(
                         rs.getInt("id_reserva"),
                         DaoHabitacion.buscarHabitacion(rs.getInt("num_habitacion")),
-                        DaoHuesped.huespedDNI(rs.getString("dni_huesped")),  // Agregado dni_huesped
+                        DaoHuesped.huespedDNI(rs.getString("dni_huesped")),
                         rs.getDate("fecha_checkin"),
                         rs.getDate("fecha_checkout"),
                         rs.getString("estado_pago"),
@@ -44,6 +49,12 @@ public class DaoReserva {
         return lista;
     }
 
+    /**
+     * Añade una nueva reserva a la base de datos.
+     *
+     * @param r Objeto Reserva con los datos a insertar.
+     * @return true si la inserción fue exitosa, false en caso contrario.
+     */
     public static boolean aniadirReserva(Reserva r) {
         ConexionBBDD connection;
         try {
@@ -51,7 +62,7 @@ public class DaoReserva {
             String consulta = "INSERT INTO reservas (num_habitacion, dni_huesped, fecha_checkin, fecha_checkout, estado_pago, cantidad_personas, precio, extras) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement pstmt = connection.getConnection().prepareStatement(consulta);
             pstmt.setInt(1, r.getHabitacion().getNumHabitacion());
-            pstmt.setString(2, r.getHuesped().getDni()); // Agregado dniHuesped
+            pstmt.setString(2, r.getHuesped().getDni());
             pstmt.setDate(3, new Date(r.getFechaCheckin().getTime()));
             pstmt.setDate(4, new Date(r.getFechaCheckout().getTime()));
             pstmt.setString(5, r.getEstadoPago());
@@ -69,6 +80,12 @@ public class DaoReserva {
         return false;
     }
 
+    /**
+     * Actualiza los datos de una reserva existente.
+     *
+     * @param r Objeto Reserva con los datos actualizados.
+     * @return true si la actualización fue exitosa, false en caso contrario.
+     */
     public static boolean actualizarReserva(Reserva r) {
         ConexionBBDD connection;
         try {
@@ -76,7 +93,7 @@ public class DaoReserva {
             String sql = "UPDATE reservas SET num_habitacion = ?, dni_huesped = ?, fecha_checkin = ?, fecha_checkout = ?, estado_pago = ?, cantidad_personas = ?, precio = ?, extras = ? WHERE id_reserva = ?";
             PreparedStatement pstmt = connection.getConnection().prepareStatement(sql);
             pstmt.setInt(1, r.getHabitacion().getNumHabitacion());
-            pstmt.setString(2, r.getHuesped().getDni()); // Agregado dniHuesped
+            pstmt.setString(2, r.getHuesped().getDni());
             pstmt.setDate(3, new Date(r.getFechaCheckin().getTime()));
             pstmt.setDate(4, new Date(r.getFechaCheckout().getTime()));
             pstmt.setString(5, r.getEstadoPago());
@@ -94,6 +111,12 @@ public class DaoReserva {
         return false;
     }
 
+    /**
+     * Elimina una reserva por su ID.
+     *
+     * @param idReserva ID de la reserva a eliminar.
+     * @return true si la eliminación fue exitosa, false en caso contrario.
+     */
     public static boolean eliminarReserva(int idReserva) {
         ConexionBBDD connection;
         try {
@@ -111,13 +134,28 @@ public class DaoReserva {
         return false;
     }
 
+    /**
+     * Verifica si existe una reserva con un ID específico.
+     * Esta implementación consulta directamente a la base para optimizar rendimiento.
+     *
+     * @param id ID de la reserva.
+     * @return true si existe la reserva, false en caso contrario.
+     */
     public static boolean existeReservaConId(int id) {
-        for (Reserva reserva : todasReservas()) {
-            if (reserva.getIdReserva() == id) {
-                return true;
-            }
+        ConexionBBDD connection;
+        boolean existe = false;
+        try {
+            connection = new ConexionBBDD();
+            String consulta = "SELECT 1 FROM reservas WHERE id_reserva = ?";
+            PreparedStatement pstmt = connection.getConnection().prepareStatement(consulta);
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+            existe = rs.next();
+            pstmt.close();
+            connection.CloseConexion();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return false;
+        return existe;
     }
-
 }

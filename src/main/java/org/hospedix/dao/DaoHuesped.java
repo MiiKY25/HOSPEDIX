@@ -3,7 +3,6 @@ package org.hospedix.dao;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.hospedix.bbdd.ConexionBBDD;
-import org.hospedix.modelos.Empleado;
 import org.hospedix.modelos.Huesped;
 
 import java.sql.PreparedStatement;
@@ -12,7 +11,13 @@ import java.sql.SQLException;
 
 public class DaoHuesped {
 
-    public static Huesped huespedDNI (String dni) {
+    /**
+     * Obtiene un huésped a partir de su DNI.
+     *
+     * @param dni DNI del huésped a buscar.
+     * @return Objeto Huesped si se encuentra, null si no existe o en caso de error.
+     */
+    public static Huesped huespedDNI(String dni) {
         ConexionBBDD connection;
         String consulta = "SELECT dni, nombre,apellido,telefono FROM huesped where dni=?";
         try {
@@ -25,7 +30,7 @@ public class DaoHuesped {
                 String apellido = rs.getString(3);
                 int telefono = rs.getInt(4);
 
-                Huesped h=new Huesped(dni,nombre,apellido,telefono);
+                Huesped h = new Huesped(dni, nombre, apellido, telefono);
                 return h;
             }
             pstmt.close();
@@ -35,6 +40,11 @@ public class DaoHuesped {
         return null;
     }
 
+    /**
+     * Obtiene una lista con todos los huéspedes de la base de datos.
+     *
+     * @return ObservableList con todos los huéspedes.
+     */
     public static ObservableList<Huesped> todosHuesped() {
         ObservableList<Huesped> lista = FXCollections.observableArrayList();
         ConexionBBDD connection;
@@ -50,7 +60,7 @@ public class DaoHuesped {
                 String apellido = rs.getString(3);
                 int telefono = rs.getInt(4);
 
-                Huesped h=new Huesped(dni,nombre,apellido,telefono);
+                Huesped h = new Huesped(dni, nombre, apellido, telefono);
                 lista.add(h);
             }
             pstmt.close();
@@ -60,6 +70,12 @@ public class DaoHuesped {
         return lista;
     }
 
+    /**
+     * Añade un nuevo huésped a la base de datos.
+     *
+     * @param h Objeto Huesped con los datos a insertar.
+     * @return true si la inserción fue exitosa, false en caso contrario.
+     */
     public static boolean aniadirHuesped(Huesped h) {
         ConexionBBDD connection;
         int resul = 0;
@@ -80,6 +96,12 @@ public class DaoHuesped {
         return resul > 0;
     }
 
+    /**
+     * Actualiza los datos de un huésped existente.
+     *
+     * @param h Objeto Huesped con los datos actualizados.
+     * @return true si la actualización fue exitosa, false en caso contrario.
+     */
     public static boolean actualizarHuesped(Huesped h) {
         ConexionBBDD connection;
         try {
@@ -100,6 +122,12 @@ public class DaoHuesped {
         return false;
     }
 
+    /**
+     * Elimina un huésped según su DNI.
+     *
+     * @param dni DNI del huésped a eliminar.
+     * @return true si la eliminación fue exitosa, false en caso contrario.
+     */
     public static boolean eliminarHuesped(String dni) {
         ConexionBBDD connection;
         try {
@@ -117,6 +145,12 @@ public class DaoHuesped {
         return false;
     }
 
+    /**
+     * Comprueba si un huésped tiene reservas asociadas.
+     *
+     * @param dni DNI del huésped a comprobar.
+     * @return true si tiene reservas, false si no tiene o en caso de error.
+     */
     public static boolean huespedTieneReservas(String dni) {
         ConexionBBDD connection;
         boolean tiene = false;
@@ -137,6 +171,12 @@ public class DaoHuesped {
         return tiene;
     }
 
+    /**
+     * Elimina un huésped y todas sus reservas asociadas en una transacción.
+     *
+     * @param dni DNI del huésped a eliminar.
+     * @return true si la eliminación fue exitosa, false en caso contrario.
+     */
     public static boolean eliminarHuespedYReservas(String dni) {
         ConexionBBDD connection;
         try {

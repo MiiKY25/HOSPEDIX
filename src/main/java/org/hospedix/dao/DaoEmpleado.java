@@ -4,16 +4,23 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.hospedix.bbdd.ConexionBBDD;
 import org.hospedix.modelos.Empleado;
-import org.hospedix.modelos.Habitacion;
 
-import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Clase DAO para gestionar operaciones CRUD de empleados en la base de datos.
+ */
 public class DaoEmpleado {
 
-    public static Empleado empleadoDNI (String dni) {
+    /**
+     * Busca un empleado en la base de datos mediante su DNI.
+     *
+     * @param dni DNI del empleado a buscar.
+     * @return Objeto Empleado si se encuentra, null si no existe.
+     */
+    public static Empleado empleadoDNI(String dni) {
         ConexionBBDD connection;
         String consulta = "SELECT dni, nombre,apellido,telefono,direccion,cargo,horario_trabajo FROM empleados where dni=?";
         try {
@@ -26,9 +33,9 @@ public class DaoEmpleado {
                 String apellido = rs.getString(3);
                 int telefono = rs.getInt(4);
                 String direccion = rs.getString(5);
-                String cargo= rs.getString(6);
-                String horario_trabajo= rs.getString(6);
-                Empleado e=new Empleado(dni,nombre,apellido,telefono,direccion,cargo,horario_trabajo);
+                String cargo = rs.getString(6);
+                String horario_trabajo = rs.getString(7);
+                Empleado e = new Empleado(dni, nombre, apellido, telefono, direccion, cargo, horario_trabajo);
                 return e;
             }
             pstmt.close();
@@ -38,6 +45,11 @@ public class DaoEmpleado {
         return null;
     }
 
+    /**
+     * Obtiene una lista de todos los empleados registrados.
+     *
+     * @return Lista observable de empleados.
+     */
     public static ObservableList<Empleado> todosEmpleados() {
         ObservableList<Empleado> lista = FXCollections.observableArrayList();
         ConexionBBDD connection;
@@ -53,9 +65,9 @@ public class DaoEmpleado {
                 String apellido = rs.getString(3);
                 int telefono = rs.getInt(4);
                 String direccion = rs.getString(5);
-                String cargo= rs.getString(6);
-                String horario_trabajo= rs.getString(7);
-                Empleado e=new Empleado(dni,nombre,apellido,telefono,direccion,cargo,horario_trabajo);
+                String cargo = rs.getString(6);
+                String horario_trabajo = rs.getString(7);
+                Empleado e = new Empleado(dni, nombre, apellido, telefono, direccion, cargo, horario_trabajo);
                 lista.add(e);
             }
             pstmt.close();
@@ -65,6 +77,12 @@ public class DaoEmpleado {
         return lista;
     }
 
+    /**
+     * Inserta un nuevo empleado en la base de datos.
+     *
+     * @param e Objeto Empleado a añadir.
+     * @return true si la inserción fue exitosa, false en caso contrario.
+     */
     public static boolean aniadirEmpleado(Empleado e) {
         ConexionBBDD connection;
         int resul = 0;
@@ -88,6 +106,12 @@ public class DaoEmpleado {
         return resul > 0;
     }
 
+    /**
+     * Actualiza los datos de un empleado existente en la base de datos.
+     *
+     * @param e Empleado con los nuevos datos.
+     * @return true si la actualización fue exitosa, false en caso contrario.
+     */
     public static boolean actualizarEmpleado(Empleado e) {
         ConexionBBDD connection;
         try {
@@ -111,6 +135,12 @@ public class DaoEmpleado {
         return false;
     }
 
+    /**
+     * Elimina un empleado de la base de datos mediante su DNI.
+     *
+     * @param dni DNI del empleado a eliminar.
+     * @return true si la eliminación fue exitosa, false en caso contrario.
+     */
     public static boolean eliminarEmpleado(String dni) {
         ConexionBBDD connection;
         try {
@@ -127,6 +157,4 @@ public class DaoEmpleado {
         }
         return false;
     }
-
-
 }
