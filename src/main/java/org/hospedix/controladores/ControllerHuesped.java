@@ -9,14 +9,17 @@ import javafx.scene.control.*;
 import javafx.scene.Node;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import org.hospedix.dao.DaoEmpleado;
 import org.hospedix.dao.DaoHuesped;
-import org.hospedix.modelos.Empleado;
 import org.hospedix.modelos.Huesped;
 
 import java.io.IOException;
 import java.util.Optional;
 
+/**
+ * Controlador para la gestión de huéspedes.
+ * Permite añadir, editar, eliminar y listar huéspedes.
+ * Controla la interacción entre la vista (FXML) y el modelo de datos.
+ */
 public class ControllerHuesped {
 
     @FXML
@@ -55,16 +58,24 @@ public class ControllerHuesped {
     @FXML
     private TextField txtTelefono;
 
+    /**
+     * Huésped seleccionado actualmente en la tabla para editar o eliminar.
+     */
     private Huesped huespedSeleccionado = null;
 
+    /**
+     * Acción para añadir un nuevo huésped.
+     * Valida datos, verifica que no exista otro con el mismo DNI, y guarda en base de datos.
+     *
+     * @param event Evento generado al pulsar el botón Añadir.
+     */
     @FXML
     void accionAniadir(ActionEvent event) {
-        String error=validarDatos();
-        if (error.isEmpty()){
-            Huesped huesped= DaoHuesped.huespedDNI(txtDNI.getText());
-            if (huesped==null){
-                //Crear Huesped
-                Huesped h=new Huesped(txtDNI.getText(),txtNombre.getText(),txtApellidos.getText(),Integer.parseInt(txtTelefono.getText()));
+        String error = validarDatos();
+        if (error.isEmpty()) {
+            Huesped huesped = DaoHuesped.huespedDNI(txtDNI.getText());
+            if (huesped == null) {
+                Huesped h = new Huesped(txtDNI.getText(), txtNombre.getText(), txtApellidos.getText(), Integer.parseInt(txtTelefono.getText()));
                 Boolean estado = DaoHuesped.aniadirHuesped(h);
                 if (estado) {
                     mostrarInfo("Huesped creado correctamente");
@@ -73,22 +84,28 @@ public class ControllerHuesped {
                 } else {
                     mostrarError("Error al crear el Huesped");
                 }
-            }else {
-                mostrarError("Ya existe un huesped con el DNI: "+txtDNI.getText());
+            } else {
+                mostrarError("Ya existe un huesped con el DNI: " + txtDNI.getText());
             }
-        }else {
+        } else {
             mostrarError(error);
         }
     }
 
+    /**
+     * Acción para editar el huésped seleccionado.
+     * Valida datos y actualiza la información en la base de datos.
+     *
+     * @param event Evento generado al pulsar el botón Editar.
+     */
     @FXML
     void accionEditar(ActionEvent event) {
-        Huesped h=tablaHuesped.getSelectionModel().getSelectedItem();
-        if (h!=null){
-            String error=validarDatos();
-            if (error.isEmpty()){
-                Huesped HuespedNuevo=new Huesped(h.getDni(),txtNombre.getText(),txtApellidos.getText(),Integer.parseInt(txtTelefono.getText()));
-                Boolean estado = DaoHuesped.actualizarHuesped(HuespedNuevo);
+        Huesped h = tablaHuesped.getSelectionModel().getSelectedItem();
+        if (h != null) {
+            String error = validarDatos();
+            if (error.isEmpty()) {
+                Huesped huespedNuevo = new Huesped(h.getDni(), txtNombre.getText(), txtApellidos.getText(), Integer.parseInt(txtTelefono.getText()));
+                Boolean estado = DaoHuesped.actualizarHuesped(huespedNuevo);
                 if (estado) {
                     mostrarInfo("Huesped editado correctamente");
                     limpiarCampos();
@@ -97,14 +114,19 @@ public class ControllerHuesped {
                 } else {
                     mostrarError("Error al editar el Huesped");
                 }
-            }else{
+            } else {
                 mostrarError(error);
             }
-        }else {
+        } else {
             mostrarError("Selecciona un Huesped");
         }
     }
 
+    /**
+     * Acción para eliminar el huésped seleccionado.
+     * Comprueba si tiene reservas vinculadas y solicita confirmación antes de eliminar.
+     * Elimina el huésped y sus reservas asociadas si el usuario confirma.
+     */
     @FXML
     private void accionEliminar() {
         Huesped seleccionado = tablaHuesped.getSelectionModel().getSelectedItem();
@@ -133,9 +155,6 @@ public class ControllerHuesped {
                 } else {
                     mostrarAlerta(Alert.AlertType.ERROR, "Error", "No se pudo eliminar el huésped.");
                 }
-            } else {
-                // Cancelado por el usuario
-                return;
             }
         } else {
             Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
@@ -155,12 +174,21 @@ public class ControllerHuesped {
         }
     }
 
-
+    /**
+     * Limpia los campos del formulario y restablece botones a estado inicial.
+     *
+     * @param event Evento generado al pulsar el botón Limpiar.
+     */
     @FXML
     void accionLimpiar(ActionEvent event) {
         limpiarCampos();
     }
 
+    /**
+     * Vuelve al menú principal cargando la escena correspondiente.
+     *
+     * @param event Evento generado al pulsar el botón Volver.
+     */
     @FXML
     void accionVolver(ActionEvent event) {
         try {
@@ -175,21 +203,28 @@ public class ControllerHuesped {
         }
     }
 
+    /**
+     * Carga la lista completa de huéspedes y la asigna a la tabla.
+     */
     void cargarHuesped() {
         ObservableList<Huesped> listaHuesped = DaoHuesped.todosHuesped();
         tablaHuesped.setItems(listaHuesped);
         tablaHuesped.refresh();
     }
 
+    /**
+     * Configura el evento de selección en la tabla para cargar datos
+     * en el formulario al hacer clic sobre un huésped.
+     */
     private void configurarEventosTabla() {
         tablaHuesped.setOnMouseClicked(event -> {
             huespedSeleccionado = tablaHuesped.getSelectionModel().getSelectedItem();
 
             if (huespedSeleccionado != null) {
-                txtDNI.setText(String.valueOf(huespedSeleccionado.getDni()));
+                txtDNI.setText(huespedSeleccionado.getDni());
                 txtTelefono.setText(String.valueOf(huespedSeleccionado.getTelefono()));
-                txtApellidos.setText(String.valueOf(huespedSeleccionado.getApellido()));
-                txtNombre.setText(String.valueOf(huespedSeleccionado.getNombre()));
+                txtApellidos.setText(huespedSeleccionado.getApellido());
+                txtNombre.setText(huespedSeleccionado.getNombre());
                 txtDNI.setDisable(true);
 
                 btnEditar.setDisable(false);
@@ -199,23 +234,35 @@ public class ControllerHuesped {
         });
     }
 
+    /**
+     * Establece el estado inicial de los botones: Añadir habilitado,
+     * Editar y Eliminar deshabilitados.
+     */
     private void estadoInicialBotones() {
         btnEditar.setDisable(true);
         btnEliminar.setDisable(true);
         btnAniadir.setDisable(false);
     }
 
+    /**
+     * Limpia los campos del formulario y habilita/deshabilita botones y campos necesarios.
+     */
     private void limpiarCampos() {
-        txtDNI.setText("");
-        txtNombre.setText("");
-        txtApellidos.setText("");
-        txtTelefono.setText("");
+        txtDNI.clear();
+        txtNombre.clear();
+        txtApellidos.clear();
+        txtTelefono.clear();
         txtDNI.setDisable(false);
         btnAniadir.setDisable(false);
         btnEliminar.setDisable(true);
         btnEditar.setDisable(true);
     }
 
+    /**
+     * Valida los datos ingresados en el formulario.
+     *
+     * @return un String vacío si los datos son válidos, o un mensaje de error con las validaciones fallidas.
+     */
     public String validarDatos() {
         String error = "";
 
@@ -249,9 +296,9 @@ public class ControllerHuesped {
     }
 
     /**
-     * Muestra un mensaje de error en una alerta.
+     * Muestra un mensaje de error en una ventana emergente.
      *
-     * @param error el mensaje de error a mostrar.
+     * @param error Mensaje de error a mostrar.
      */
     void mostrarError(String error) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -262,18 +309,25 @@ public class ControllerHuesped {
     }
 
     /**
-     * Muestra un mensaje informativo en una alerta.
+     * Muestra un mensaje informativo en una ventana emergente.
      *
-     * @param info mensaje de información a mostrar.
+     * @param info Mensaje informativo a mostrar.
      */
     void mostrarInfo(String info) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(null);
-        alert.setTitle("Informacion");
+        alert.setTitle("Información");
         alert.setContentText(info);
         alert.showAndWait();
     }
 
+    /**
+     * Muestra una alerta con el tipo, título y mensaje especificados.
+     *
+     * @param tipo    Tipo de alerta (información, advertencia, error, etc.).
+     * @param titulo  Título de la ventana de alerta.
+     * @param mensaje Mensaje a mostrar en la alerta.
+     */
     private void mostrarAlerta(Alert.AlertType tipo, String titulo, String mensaje) {
         Alert alerta = new Alert(tipo);
         alerta.setTitle(titulo);
@@ -282,9 +336,12 @@ public class ControllerHuesped {
         alerta.showAndWait();
     }
 
+    /**
+     * Inicializa el controlador después de que se hayan cargado las vistas FXML.
+     * Configura columnas de la tabla, eventos, carga datos y establece estado inicial.
+     */
     @FXML
     private void initialize() {
-        // Configuración de las columnas de la tabla
         colDNI.setCellValueFactory(new PropertyValueFactory<>("dni"));
         colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colApellidos.setCellValueFactory(new PropertyValueFactory<>("apellido"));

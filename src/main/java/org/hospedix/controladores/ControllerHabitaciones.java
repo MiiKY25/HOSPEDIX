@@ -15,23 +15,39 @@ import org.hospedix.modelos.Habitacion;
 import java.io.IOException;
 import java.util.Optional;
 
+/**
+ * Controlador para la gestión de habitaciones.
+ * Permite añadir, editar, eliminar y listar habitaciones en la interfaz.
+ * También valida datos ingresados y maneja interacciones con la tabla y los formularios.
+ */
 public class ControllerHabitaciones {
 
     @FXML private Button btnAniadir;
     @FXML private Button btnEditar;
     @FXML private Button btnEliminar;
+
     @FXML private TableColumn<Habitacion, String> colEstado;
     @FXML private TableColumn<Habitacion, Integer> colHabitacion;
     @FXML private TableColumn<Habitacion, Double> colPrecio;
     @FXML private TableColumn<Habitacion, String> colTipo;
+
     @FXML private ComboBox<String> comboEstado;
     @FXML private ComboBox<String> comboTipo;
+
     @FXML private TableView<Habitacion> tablaHabitacion;
+
     @FXML private TextField txtHabitacion;
     @FXML private TextField txtPrecio;
 
+    /**
+     * Habitacion actualmente seleccionada en la tabla.
+     */
     private Habitacion habitacionSeleccionada = null;
 
+    /**
+     * Configura los eventos de la tabla para que al hacer click en una fila,
+     * se carguen los datos en el formulario para editar o eliminar.
+     */
     private void configurarEventosTabla() {
         tablaHabitacion.setOnMouseClicked(event -> {
             habitacionSeleccionada = tablaHabitacion.getSelectionModel().getSelectedItem();
@@ -40,7 +56,6 @@ public class ControllerHabitaciones {
                 txtHabitacion.setText(String.valueOf(habitacionSeleccionada.getNumHabitacion()));
                 txtPrecio.setText(String.valueOf(habitacionSeleccionada.getPrecio()));
 
-                // Forzar refresco de ComboBox
                 comboEstado.getSelectionModel().clearSelection();
                 comboEstado.getSelectionModel().select(habitacionSeleccionada.getEstado());
 
@@ -56,12 +71,21 @@ public class ControllerHabitaciones {
         });
     }
 
+    /**
+     * Carga todas las habitaciones desde la base de datos y actualiza la tabla.
+     */
     private void cargarHabitaciones() {
         tablaHabitacion.getItems().setAll(DaoHabitacion.todasHabitaciones());
     }
 
+    /**
+     * Acción para añadir una nueva habitación.
+     * Valida los datos y muestra mensajes de éxito o error.
+     *
+     * @param event Evento de acción al pulsar el botón Añadir.
+     */
     @FXML
-    void accionAniadir(javafx.event.ActionEvent event) {
+    void accionAniadir(ActionEvent event) {
         if (!validarCampos()) return;
 
         try {
@@ -90,8 +114,14 @@ public class ControllerHabitaciones {
         }
     }
 
+    /**
+     * Acción para editar la habitación seleccionada.
+     * Valida y actualiza los datos en la base de datos.
+     *
+     * @param event Evento de acción al pulsar el botón Editar.
+     */
     @FXML
-    void accionEditar(javafx.event.ActionEvent event) {
+    void accionEditar(ActionEvent event) {
         if (habitacionSeleccionada == null) {
             mostrarError("Seleccione una habitación para editar.");
             return;
@@ -125,6 +155,12 @@ public class ControllerHabitaciones {
         }
     }
 
+    /**
+     * Acción para eliminar la habitación seleccionada.
+     * Confirma eliminación, verifica si hay registros asociados y elimina en consecuencia.
+     *
+     * @param event Evento de acción al pulsar el botón Eliminar.
+     */
     @FXML
     void accionEliminar(ActionEvent event) {
         if (habitacionSeleccionada == null) {
@@ -184,15 +220,23 @@ public class ControllerHabitaciones {
         }
     }
 
-
-
+    /**
+     * Limpia los campos del formulario.
+     *
+     * @param event Evento de acción al pulsar el botón Limpiar.
+     */
     @FXML
     void accionLimpiar(ActionEvent event) {
         limpiarCampos();
     }
 
+    /**
+     * Vuelve al menú principal.
+     *
+     * @param event Evento de acción al pulsar el botón Volver.
+     */
     @FXML
-    void accionVolver(javafx.event.ActionEvent event) {
+    void accionVolver(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/menu.fxml"));
             Scene scene = new Scene(loader.load());
@@ -205,6 +249,11 @@ public class ControllerHabitaciones {
         }
     }
 
+    /**
+     * Valida que los campos del formulario estén completos y con formato correcto.
+     *
+     * @return true si los datos son válidos; false si hay algún error.
+     */
     private boolean validarCampos() {
         String habitacionStr = txtHabitacion.getText().trim();
         String precioStr = txtPrecio.getText().trim();
@@ -230,7 +279,7 @@ public class ControllerHabitaciones {
     /**
      * Muestra un mensaje de error en una alerta.
      *
-     * @param error el mensaje de error a mostrar.
+     * @param error Mensaje de error a mostrar.
      */
     void mostrarError(String error) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -243,16 +292,19 @@ public class ControllerHabitaciones {
     /**
      * Muestra un mensaje informativo en una alerta.
      *
-     * @param info mensaje de información a mostrar.
+     * @param info Mensaje de información a mostrar.
      */
     void mostrarInfo(String info) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(null);
-        alert.setTitle("Informacion");
+        alert.setTitle("Información");
         alert.setContentText(info);
         alert.showAndWait();
     }
 
+    /**
+     * Limpia los campos del formulario y restablece el estado inicial de los botones.
+     */
     private void limpiarCampos() {
         txtHabitacion.clear();
         txtPrecio.clear();
@@ -265,12 +317,19 @@ public class ControllerHabitaciones {
         btnEditar.setDisable(true);
     }
 
+    /**
+     * Establece el estado inicial de los botones (añadir habilitado, editar y eliminar deshabilitados).
+     */
     private void estadoInicialBotones() {
         btnEditar.setDisable(true);
         btnEliminar.setDisable(true);
         btnAniadir.setDisable(false);
     }
 
+    /**
+     * Metodo de inicialización de JavaFX.
+     * Configura las columnas de la tabla, los combos, carga datos y establece el estado inicial.
+     */
     @FXML
     private void initialize() {
         colHabitacion.setCellValueFactory(new PropertyValueFactory<>("numHabitacion"));
