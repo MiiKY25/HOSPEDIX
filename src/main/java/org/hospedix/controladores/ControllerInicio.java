@@ -18,11 +18,25 @@ import org.hospedix.sesion.Sesion;
 import java.io.IOException;
 import java.sql.SQLException;
 
+/**
+ * Controlador para la ventana de inicio de sesión.
+ * Gestiona la autenticación del empleado mediante su DNI,
+ * el manejo de errores y la navegación hacia el menú principal.
+ */
 public class ControllerInicio {
 
     @FXML
     private TextField txtDNI;
 
+    /**
+     * Acción que se ejecuta al pulsar el botón para iniciar sesión.
+     * Verifica que el DNI no esté vacío, busca el empleado en la base de datos,
+     * guarda el empleado en la sesión y cambia a la escena del menú principal.
+     * Si no encuentra el empleado, muestra un mensaje de error.
+     *
+     * @param event el evento generado por la acción del usuario.
+     * @throws IOException si ocurre un error al cargar la vista FXML.
+     */
     @FXML
     void accionIniciarSesion(ActionEvent event) throws IOException {
         String dni = txtDNI.getText();
@@ -30,11 +44,11 @@ public class ControllerInicio {
         if (dni.isEmpty()) {
             mostrarError("Introduce un DNI");
         } else {
-            Empleado empleado=DaoEmpleado.empleadoDNI(dni);
+            Empleado empleado = DaoEmpleado.empleadoDNI(dni);
             // Verifica las credenciales del empleado
-            if (empleado!=null) {
-                //Guardar el empleado en la sesion
-                Sesion.setEmpleadoActual(empleado); // GUARDAR EL EMPLEADO EN LA SESIÓN
+            if (empleado != null) {
+                // Guardar el empleado en la sesión
+                Sesion.setEmpleadoActual(empleado);
 
                 // Cargar el nuevo FXML si las credenciales son correctas
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/menu.fxml"));
@@ -53,7 +67,7 @@ public class ControllerInicio {
     }
 
     /**
-     * Muestra un mensaje de error en una alerta.
+     * Muestra un mensaje de error en una ventana de alerta.
      *
      * @param error el mensaje de error a mostrar.
      */
@@ -65,15 +79,18 @@ public class ControllerInicio {
         alert.showAndWait();
     }
 
+    /**
+     * Metodo llamado automáticamente después de cargar el FXML.
+     * Intenta establecer la conexión con la base de datos,
+     * si falla muestra un error y cierra la aplicación.
+     */
     @FXML
     void initialize() {
-        // Controlar acceso a la base de datos
         try {
             new ConexionBBDD();
         } catch (SQLException e) {
             mostrarError("Conexion Erronea a la Base de Datos");
             Platform.exit(); // Cierra la aplicación
-            return;
         }
     }
 }
