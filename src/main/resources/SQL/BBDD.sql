@@ -51,3 +51,6 @@ CREATE TABLE incidencias (
     estado ENUM('Abierto', 'Cerrado'),
     FOREIGN KEY (num_habitacion) REFERENCES habitaciones(num_habitacion)
 );
+
+INSERT INTO empleados (dni, nombre, apellido, telefono, direccion, cargo, horario_trabajo)
+VALUES ('11111111A', 'admin', 'admin', '000000000', 'Dirección genérica', 'Gerente', 'Lunes a Viernes, 9:00 - 17:00');
